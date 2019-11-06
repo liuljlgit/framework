@@ -62,7 +62,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .accessDeniedHandler(new CustomAccessDeniedHandler());//鉴权失败异常处理
     }
 
-
     /**
      * 权限拦截器
      * @return
