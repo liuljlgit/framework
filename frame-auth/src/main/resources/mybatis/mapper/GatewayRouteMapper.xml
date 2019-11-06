@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cloud.frame.frameauth.dao.IGatewayRouteDao">
+    <resultMap id="BaseResultMap" type="com.cloud.frame.authclient.entity.GatewayRoute">
+        <id column="gr_id" jdbcType="BIGINT" property="grId" />
+        <result column="route_id" jdbcType="VARCHAR" property="routeId" />
+        <result column="instance_id" jdbcType="VARCHAR" property="instanceId" />
+        <result column="predicates" jdbcType="VARCHAR" property="predicates" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+        <result column="regexp_url" jdbcType="VARCHAR" property="regexpUrl" />
+        <result column="status" jdbcType="DECIMAL" property="status" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        gr_id,route_id,instance_id,predicates,remark,create_time,modify_time,regexp_url,status
+    </sql>
+
+    <sql id="Base_Object_List">
+        #{at.grId},#{at.routeId},#{at.instanceId},#{at.predicates},#{at.remark},#{at.createTime},#{at.modifyTime},#{at.regexpUrl},#{at.status}
+    </sql>
+
+    <sql id="Set_Not_Null_List">
+        <set>
+            <if test="ut.grId != null">
+                gr_id = #{ut.grId},
+            </if>
+            <if test="ut.routeId != null">
+                route_id = #{ut.routeId},
+            </if>
+            <if test="ut.instanceId != null">
+                instance_id = #{ut.instanceId},
+            </if>
+            <if test="ut.predicates != null">
+                predicates = #{ut.predicates},
+            </if>
+            <if test="ut.remark != null">
+                remark = #{ut.remark},
+            </if>
+            <if test="ut.createTime != null">
+                create_time = #{ut.createTime},
+            </if>
+            <if test="ut.modifyTime != null">
+                modify_time = #{ut.modifyTime},
+            </if>
+            <if test="ut.regexpUrl != null">
+                regexp_url = #{ut.regexpUrl},
+            </if>
+            <if test="ut.status != null">
+                status = #{ut.status}
+            </if>
+        </set>
+    </sql>
+
+    <sql id="Set_With_Null_List">
+        <set>
+            gr_id = #{ut.grId},
+            route_id = #{ut.routeId},
+            instance_id = #{ut.instanceId},
+            predicates = #{ut.predicates},
+            remark = #{ut.remark},
+            create_time = #{ut.createTime},
+            modify_time = #{ut.modifyTime},
+            regexp_url = #{ut.regexpUrl},
+            status = #{ut.status}
+        </set>
+    </sql>
+
+    <sql id="For_Each_Condition">
+        <foreach collection="conditGroup.conditions" item="condit">
+            <choose>
+                <when test="condit.noValue">
+                ${condit.condition}
+                </when>
+                <when test="condit.oneValue">
+                ${condit.condition} #{condit.value1}
+                </when>
+                <when test="condit.secondValue">
+                ${condit.condition} #{condit.value1} and #{condit.value2}
+                </when>
+                <when test="condit.listValue">
+                ${condit.condition}
+                    <foreach collection="condit.list" item="listItem" open="(" close=")" separator=",">
+                    #{listItem}
+                    </foreach>
+                </when>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="where_sql">
+        <if test="st.grId != null">
+            AND gr_id = #{st.grId}
+        </if>
+        <if test="st.routeId != null">
+            AND route_id = #{st.routeId}
+        </if>
+        <if test="st.instanceId != null">
+            AND instance_id = #{st.instanceId}
+        </if>
+        <if test="st.predicates != null">
+            AND predicates = #{st.predicates}
+        </if>
+        <if test="st.remark != null">
+            AND remark = #{st.remark}
+        </if>
+        <if test="st.createTime != null">
+            AND create_time = #{st.createTime}
+        </if>
+        <if test="st.modifyTime != null">
+            AND modify_time = #{st.modifyTime}
+        </if>
+        <if test="st.regexpUrl != null">
+            AND regexp_url = #{st.regexpUrl}
+        </if>
+        <if test="st.status != null">
+            AND status = #{st.status}
+        </if>
+        <if test="st.conditGroups != null">
+            <foreach collection="st.conditGroups" item="conditGroup" separator=" ">
+                <if test="conditGroup.valid">
+                    ${conditGroup.opt}
+                    <choose>
+                        <when test="conditGroup.conditions.size() > 1">
+                            <trim prefix="(" prefixOverrides="and|or" suffix=")">
+                                <include refid="For_Each_Condition" />
+                            </trim>
+                        </when>
+                        <otherwise>
+                            <trim prefixOverrides="and|or">
+                                <include refid="For_Each_Condition" />
+                            </trim>
+                        </otherwise>
+                    </choose>
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <!--获取最大的主键-->
+    <select id="selectMaxId" resultType="java.lang.Long">
+        select IFNULL(max(gr_id), 0) from `gateway_route`
+    </select>
+
+    <!--根据主键获取对象-->
+    <select id="selectById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from gateway_route
+        <where>
+            AND gr_id = #{grId}
+        </where>
+    </select>
+
+    <!--查询列表-->
+    <select id="selectList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from gateway_route
+        <where>
+            <include refid="where_sql" />
+        </where>
+        <if test="st.orderByList!=null and st.orderByList.size() > 0">
+            order by
+            <foreach collection="st.orderByList" item="order" separator=",">
+                ${order.field} ${order.mode}
+            </foreach>
+        </if>
+        <if test="st.index != null and st.pageSize != null and st.pageSize > 0" >
+            limit #{st.index},#{st.pageSize}
+        </if>
+    </select>
+
+    <!--查询列表-->
+    <select id="selectFieldList" resultMap="BaseResultMap">
+        select
+        <foreach collection="fl" item="field" separator=",">
+            ${field}
+        </foreach>
+        from gateway_route
+        <where>
+            <include refid="where_sql" />
+        </where>
+        <if test="st.orderByList!=null and st.orderByList.size() > 0">
+            order by
+            <foreach collection="st.orderByList" item="order" separator=",">
+            ${order.field} ${order.mode}
+            </foreach>
+        </if>
+        <if test="st.index != null and st.pageSize != null and st.pageSize > 0" >
+            limit #{st.index},#{st.pageSize}
+        </if>
+    </select>
+
+    <!--查询列表总数-->
+    <select id="selectCount" resultType="java.lang.Long">
+        select count(1) from gateway_route
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </select>
+
+    <!--根据ID列表获取记录列表-->
+    <select id="selectBatchIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from gateway_route
+        <where>
+        gr_id in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <!--插入对象-->
+    <insert id="add">
+        insert into gateway_route(<include refid="Base_Column_List" />)
+        values(<include refid="Base_Object_List" />)
+    </insert>
+
+    <!--批量插入对象-->
+    <insert id="addBatch">
+        insert into gateway_route(<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" index="index" item="at" separator=",">
+            (<include refid="Base_Object_List" />)
+        </foreach>
+    </insert>
+
+    <!--更新对象-->
+    <update id="updateNotNull">
+        update gateway_route
+        <include refid="Set_Not_Null_List" />
+        <where>
+            AND gr_id = #{ut.grId}
+        </where>
+    </update>
+
+    <!--批量更新对象-->
+    <update id="updateBatchNotNull">
+        <foreach collection="list" separator=";" item="ut">
+            update gateway_route
+            <include refid="Set_Not_Null_List" />
+            <where>
+                AND gr_id = #{ut.grId}
+            </where>
+        </foreach>
+    </update>
+
+    <!--更新对象(全更新)-->
+    <update id="updateWithNull">
+        update gateway_route
+        <include refid="Set_With_Null_List" />
+        <where>
+            AND gr_id = #{ut.grId}
+        </where>
+    </update>
+
+    <!--批量更新对象(全更新)-->
+    <update id="updateBatchWithNull">
+        <foreach collection="list" separator=";" item="ut">
+            update gateway_route
+            <include refid="Set_With_Null_List" />
+            <where>
+                AND gr_id = #{ut.grId}
+            </where>
+        </foreach>
+    </update>
+
+    <!--更新对象,根据查询条件更新-->
+    <update id="updateByMap">
+        update gateway_route
+        <set>
+            <foreach collection="um" index="key" item="value" separator=",">
+                ${key} = #{value}
+            </foreach>
+        </set>
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </update>
+
+    <!--根据查询条件删除记录-->
+    <delete id="delete">
+        delete from gateway_route
+        <where>
+            <include refid="where_sql" />
+        </where>
+    </delete>
+
+    <!--根据主键删除对象-->
+    <delete id="deleteById">
+        delete from gateway_route
+        <where>
+            AND gr_id = #{grId}
+        </where>
+    </delete>
+
+    <!-- 批量删除对象 -->
+    <delete id="deleteBatchIds">
+        delete from gateway_route
+        <where>
+            gr_id in
+            <foreach collection="list" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~ custom code begin ~~~~~~~~~~~~~~~~~~~~~~-->
+    
+    <!--~~~~~~~~~~~~~~~~~~~~~~ custom code end ~~~~~~~~~~~~~~~~~~~~~~-->
+
+</mapper>
