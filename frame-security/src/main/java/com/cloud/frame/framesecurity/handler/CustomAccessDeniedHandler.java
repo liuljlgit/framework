@@ -20,6 +20,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         log.error("权限不足",accessDeniedException);
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
         response.setStatus(CodeEnum.EXEC_UNAUTHORIZED_DENY.getCode());
         response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_UNAUTHORIZED_DENY)));
     }
