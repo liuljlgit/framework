@@ -24,7 +24,7 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
     public int vote(Authentication authentication, FilterInvocation fi,
                     Collection<ConfigAttribute> attributes) {
         //获取权限列表
-        return ACCESS_DENIED;
+        return ACCESS_GRANTED;
     }
 
     @Override

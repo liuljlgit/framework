@@ -30,8 +30,8 @@ security:
 
 oauth2:
   grantType: password
-  scope: all
-  clientId: gateway_client
+  scope: server
+  clientId: client_1
   clientSecret: 123456
   applicationName: ${spring.application.name}
   ignore:

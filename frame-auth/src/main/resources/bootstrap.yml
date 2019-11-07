@@ -48,8 +48,9 @@ security:
 oauth2:
   ignore:
     uri:
-      - /comuser/obj  #注册
-      - /oauth/**
+      - /comuser/obj        #注册
+      - /clientdetails/**   #oauth2客户端
+      - /oauth/**           #oauth2鉴权enpoint
       - /error
       - /swagger-ui.html/**
       - /webjars/**
@@ -57,3 +58,4 @@ oauth2:
       - /v2/api-docs
       - /csrf
       - /favicon.ico
+      - /api-doc.html

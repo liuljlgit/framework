@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @Api(tags = "自定义oauth接口")
-public class OauthController implements OauthFeign {
+public class OauthCtrl implements OauthFeign {
 
     @Autowired
     private DefaultTokenServices tokenServices;
