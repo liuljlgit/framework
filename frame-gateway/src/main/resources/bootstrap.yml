@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: frame-gateway-server
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false #开启与服务注册中心进行结合，能通过instanceId进行转发
+          lowerCaseServiceId: true #注册中心为eureka时，instanceId为小写
   main:
     allow-bean-definition-overriding: true
 
@@ -20,20 +26,8 @@ ribbon:
   ReadTimeout: 60000    #ribbon连接超时时间60s
   ConnectTimeout: 60000 #ribbon读取超时时间60s
 
-#资源验证
-security:
-  oauth2:
-    resource:
-      id: resource-gateway
-      prefer-token-info: false
-      user-info-uri: http://${DEV.HOST:localhost}:10101/userinfo
-
-oauth2:
-  grantType: password
-  scope: server
-  clientId: client_1
-  clientSecret: 123456
-  applicationName: ${spring.application.name}
-  ignore:
-    uri:
-      - /oauth/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

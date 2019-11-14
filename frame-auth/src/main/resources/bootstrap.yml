@@ -43,14 +43,20 @@ security:
     resource:
       id: resource-auth
       prefer-token-info: false
-      user-info-uri: http://${DEV.HOST:localhost}:10101/userinfo
+      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
+
 
 oauth2:
+  grantType: password
+  scope: server
+  clientId: client_1
+  clientSecret: 123456
+  applicationName: ${spring.application.name}
   ignore:
     uri:
-      - /comuser/obj        #注册
       - /clientdetails/**   #oauth2客户端
-      - /oauth/**           #oauth2鉴权enpoint
+      - /oauth/**           #oauth2鉴权enpoint以及自定义端点
+      - /gatewayroute/list  #获取网关列表
       - /error
       - /swagger-ui.html/**
       - /webjars/**
