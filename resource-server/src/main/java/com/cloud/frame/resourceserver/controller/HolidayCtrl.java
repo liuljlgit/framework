@@ -1,18 +1,21 @@
 package com.cloud.frame.resourceserver.controller;
 
-import com.cloud.ftl.ftlbasic.webEntity.PageBean;
-import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
-import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
-import io.swagger.annotations.*;
-import com.cloud.frame.resourceserver.service.IHolidayService;
 import com.cloud.frame.resourceclient.entity.Holiday;
 import com.cloud.frame.resourceclient.feign.HolidayFeign;
+import com.cloud.frame.resourceserver.service.IHolidayService;
+import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
+import com.cloud.ftl.ftlbasic.webEntity.PageBean;
+import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +33,7 @@ public class HolidayCtrl implements HolidayFeign {
     }
 
     @Override
-    public CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday){
+    public CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday, HttpServletRequest request){
         return RespEntity.ok(holidayService.selectList(holiday));
     }
 

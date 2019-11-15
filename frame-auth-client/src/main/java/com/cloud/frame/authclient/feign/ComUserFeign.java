@@ -1,14 +1,16 @@
 package com.cloud.frame.authclient.feign;
 
-import com.cloud.ftl.ftlbasic.webEntity.PageBean;
-import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
-import io.swagger.annotations.*;
 import com.cloud.frame.authclient.entity.ComUser;
+import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
+import com.cloud.ftl.ftlbasic.webEntity.PageBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated

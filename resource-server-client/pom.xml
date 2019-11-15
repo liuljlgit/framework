@@ -18,6 +18,10 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.cloud.frame</groupId>
+            <artifactId>frame-security</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.cloud.ftl</groupId>
             <artifactId>ftl-basic</artifactId>
             <version>${ftl.basic.version}</version>

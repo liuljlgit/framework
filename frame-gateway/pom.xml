@@ -51,6 +51,10 @@
                     <artifactId>spring-webmvc</artifactId>
                     <groupId>org.springframework</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.cloud.frame</groupId>
+                    <artifactId>frame-security</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>

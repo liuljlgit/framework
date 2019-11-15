@@ -57,10 +57,6 @@
             <groupId>com.cloud.frame</groupId>
             <artifactId>resource-server-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.cloud.frame</groupId>
-            <artifactId>frame-security</artifactId>
-        </dependency>
         <!-- tool -->
         <dependency>
             <groupId>com.alibaba</groupId>

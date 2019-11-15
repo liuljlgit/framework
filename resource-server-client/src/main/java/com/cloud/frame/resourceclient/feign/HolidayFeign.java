@@ -1,14 +1,17 @@
 package com.cloud.frame.resourceclient.feign;
 
-import com.cloud.ftl.ftlbasic.webEntity.PageBean;
-import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
-import io.swagger.annotations.*;
 import com.cloud.frame.resourceclient.entity.Holiday;
+import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
+import com.cloud.ftl.ftlbasic.webEntity.PageBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -23,7 +26,7 @@ public interface HolidayFeign {
 
     @PostMapping(value = "/holiday/list")
     @ApiOperation(value = "查询所有列表" , notes = "author: llj")
-    CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday);
+    CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday, HttpServletRequest request);
 
     @PostMapping(value = "/holiday/page")
     @ApiOperation(value = "分页查询" , notes = "author: llj")
