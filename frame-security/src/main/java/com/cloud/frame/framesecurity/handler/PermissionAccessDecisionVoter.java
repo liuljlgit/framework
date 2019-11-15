@@ -13,7 +13,7 @@ import java.util.Collection;
 /**
  * security拦截器
  *
- * @author jun
+ * @author Lulijun
  */
 @Slf4j
 public class PermissionAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {

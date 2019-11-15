@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @Api(tags = "1、用户表")
 @AuthorizedUserFeignClient(name = "${frame.auth.server:frame-auth-server}")
-public interface UserFeign {
+public interface SecurityFeign {
 
     @GetMapping(value = "/comuser/detail")
     @ApiOperation(value = "根据主键查询" , notes = "author: llj")

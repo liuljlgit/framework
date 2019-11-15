@@ -3,7 +3,7 @@ package com.cloud.frame.frameauth.controller;
 import com.cloud.frame.authclient.entity.ComUser;
 import com.cloud.frame.authclient.feign.ComUserFeign;
 import com.cloud.frame.frameauth.service.IComUserService;
-import com.cloud.frame.framesecurity.feign.UserFeign;
+import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @Validated
 @Api(tags = "1、用户表")
-public class ComUserCtrl implements ComUserFeign , UserFeign {
+public class ComUserCtrl implements ComUserFeign , SecurityFeign {
 
     @Autowired
     private IComUserService comUserService;

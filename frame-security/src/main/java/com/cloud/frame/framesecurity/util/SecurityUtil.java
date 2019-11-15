@@ -3,7 +3,7 @@ package com.cloud.frame.framesecurity.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.frame.framesecurity.entity.LoginUser;
-import com.cloud.frame.framesecurity.feign.UserFeign;
+import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class SecurityUtil {
 
-    private static UserFeign userFeign = ApplicationContextUtil.getBean(UserFeign.class);
+    private static SecurityFeign securityFeign = ApplicationContextUtil.getBean(SecurityFeign.class);
 
     /**
      * 获取当前登录用户
@@ -32,7 +32,7 @@ public class SecurityUtil {
             if(details instanceof Map){
                 Map<String,Object> detailMap = (Map)details;
                 JSONObject user = JSONObject.parseObject(JSON.toJSONString(detailMap.get("principal")));
-                Object userDetail = userFeign.getUserDetailById(user.getLong("id"));
+                Object userDetail = securityFeign.getUserDetailById(user.getLong("id"));
                 if(Objects.nonNull(userDetail)){
                     return JSONObject.parseObject(JSON.toJSONString(userDetail),LoginUser.class);
                 }
