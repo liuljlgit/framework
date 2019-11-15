@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 
 import java.util.Collection;
@@ -23,7 +24,9 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
     @SuppressWarnings("unchecked")
     public int vote(Authentication authentication, FilterInvocation fi,
                     Collection<ConfigAttribute> attributes) {
-        //获取权限列表
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        //把权限->请求路径列表的数据放到redis中进行权限验证
+
         return ACCESS_GRANTED;
     }
 
