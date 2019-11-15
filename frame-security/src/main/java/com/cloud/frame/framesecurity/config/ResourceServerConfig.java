@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
     private AccessDecisionVoter accessDecisionVoter;
+
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -68,8 +72,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     @Bean
     @ConditionalOnMissingBean(AccessDecisionVoter.class)
-    public AccessDecisionVoter accessDecisionVoter(){
-        return new PermissionAccessDecisionVoter();
+    public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate){
+        return new PermissionAccessDecisionVoter(redisTemplate);
     }
 
 }
