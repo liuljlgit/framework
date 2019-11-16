@@ -11,10 +11,7 @@ import java.util.Date;
  * @version v 0.1 2019/11/14 18:04
  */
 @Data
-/*@Builder*/
 @ApiModel("登录用户")
-/*@NoArgsConstructor
-@AllArgsConstructor*/
 public class LoginUser {
 
     @ApiModelProperty("主键")

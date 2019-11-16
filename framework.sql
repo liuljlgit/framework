@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2019-11-16 15:18:50
+Date: 2019-11-16 15:23:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -171,7 +171,8 @@ CREATE TABLE `com_role` (
   `role_name` varchar(50) DEFAULT NULL COMMENT '角色名',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
-  PRIMARY KEY (`role_id`)
+  PRIMARY KEY (`role_id`),
+  UNIQUE KEY `IDX_ROLE_NAME` (`role_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='2、角色表';
 
 -- ----------------------------

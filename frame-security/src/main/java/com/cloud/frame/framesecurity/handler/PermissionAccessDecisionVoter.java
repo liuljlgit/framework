@@ -1,5 +1,6 @@
 package com.cloud.frame.framesecurity.handler;
 
+import com.cloud.frame.framesecurity.constant.RoleConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -9,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * security拦截器
@@ -30,7 +33,10 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
                     Collection<ConfigAttribute> attributes) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         //把权限->请求路径列表的数据放到redis中进行权限验证,每次从redis中获取数据进行验证
-
+        Map<Object, Object> roleMap = redisTemplate.opsForHash().entries(RoleConst.ROLE_);
+        if(Objects.isNull(roleMap)){
+            
+        }
         //关于表单权限（前端给表单主键增加唯一性的标识）,后端记录这些标识进行不同权限返回不同的标识列表，拥有这些标识的才展示。
         return ACCESS_GRANTED;
     }
