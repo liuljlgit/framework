@@ -31,6 +31,7 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         //把权限->请求路径列表的数据放到redis中进行权限验证,每次从redis中获取数据进行验证
 
+        //关于表单权限（前端给表单主键增加唯一性的标识）,后端记录这些标识进行不同权限返回不同的标识列表，拥有这些标识的才展示。
         return ACCESS_GRANTED;
     }
 

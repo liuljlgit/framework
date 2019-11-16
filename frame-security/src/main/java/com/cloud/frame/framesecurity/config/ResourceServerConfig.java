@@ -43,6 +43,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private RedisTemplate<String,Object> redisTemplate;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void configure(HttpSecurity http) throws Exception {
         List<String> uri = new ArrayList<>(ignoreUrl.getUri());
         uri.addAll(ignoreUris);

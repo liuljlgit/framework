@@ -10,11 +10,9 @@ import com.cloud.frame.framesecurity.entity.SecurityAuthority;
 import com.cloud.frame.framesecurity.entity.SecurityUser;
 import com.cloud.ftl.ftlbasic.enums.Opt;
 import com.cloud.ftl.ftlbasic.exception.BusiException;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -68,13 +66,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 SecurityAuthority securityAuthority = new SecurityAuthority();
                 securityAuthority.setId(role.getRoleId());
                 securityAuthority.setRoleName(role.getRoleName());
-                String menuIds = role.getMenuIds();
-                if(StringUtils.isNotEmpty(menuIds)){
-                    List<String> menuList = Splitter.on(",")
-                            .trimResults()
-                            .splitToList(menuIds);
-                    securityAuthority.setMenuSet(Sets.newHashSet(menuList));
-                }
                 grantedAuthorities.add(securityAuthority);
             }
         }

@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import java.util.Set;
 
 /**
  * @author Liulj
@@ -21,9 +20,6 @@ public class SecurityAuthority implements GrantedAuthority {
 
     @ApiModelProperty("角色名称")
     private String roleName;
-
-    @ApiModelProperty("菜单列表")
-    private Set<String> menuSet;
 
     @Override
     public String getAuthority() {
