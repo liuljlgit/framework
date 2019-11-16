@@ -1,17 +1,20 @@
 package com.cloud.frame.authclient.entity;
 
-import java.util.Date;
-import java.util.List;
-import java.math.BigDecimal;
-import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
+import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
 import com.cloud.ftl.ftlbasic.enums.Opt;
-import lombok.*;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,15 +24,12 @@ import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
 @ApiModel("ComRole")
 public class ComRole extends BaseQuery {
 
-	@ApiModelProperty("")
+	@ApiModelProperty("主键")
     @PrimaryKey
     private Long roleId;
 
 	@ApiModelProperty("角色名")
     private String roleName;
-
-	@ApiModelProperty("对应的菜单id，前后逗号分隔，如”,2,22,11,221,“'")
-    private String menuIds;
 
 	@ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
@@ -45,10 +45,6 @@ public class ComRole extends BaseQuery {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public static final transient String ROLE_NAME = "role_name";
-
-    @JsonIgnore
-    @ApiModelProperty(hidden = true)
-    public static final transient String MENU_IDS = "menu_ids";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -89,22 +85,6 @@ public class ComRole extends BaseQuery {
 
     public void andRoleName(Opt opt,String firstParam,String secondParam) {
         addConditGroup(ROLE_NAME,opt,firstParam,secondParam);
-    }
-
-    public void andMenuIds(Opt opt) {
-        addConditGroup(MENU_IDS,opt);
-    }
-
-    public void andMenuIds(Opt opt,String menuIds) {
-        addConditGroup(MENU_IDS,opt,menuIds);
-    }
-
-    public void andMenuIds(Opt opt,List<String> list) {
-        addConditGroup(MENU_IDS,opt,list);
-    }
-
-    public void andMenuIds(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(MENU_IDS,opt,firstParam,secondParam);
     }
 
     public void andCreateTime(Opt opt) {

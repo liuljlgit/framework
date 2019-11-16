@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cloud.frame.frameauth.dao.IComRoleDao">
-    <resultMap id="BaseResultMap" type="com.cloud.frame.authclient.entity.ComRole">
-        <id column="role_id" jdbcType="BIGINT" property="roleId" />
-        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+<mapper namespace="com.cloud.frame.frameauth.dao.IComMenuRoleDao">
+    <resultMap id="BaseResultMap" type="com.cloud.frame.authclient.entity.ComMenuRole">
+        <id column="mr_id" jdbcType="BIGINT" property="mrId" />
+        <result column="role_id" jdbcType="BIGINT" property="roleId" />
+        <result column="menu_id" jdbcType="BIGINT" property="menuId" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="is_enable" jdbcType="TINYINT" property="isEnable" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        role_id,role_name,create_time,is_enable
+        mr_id,role_id,menu_id,create_time
     </sql>
 
     <sql id="Base_Object_List">
-        #{at.roleId},#{at.roleName},#{at.createTime},#{at.isEnable}
+        #{at.mrId},#{at.roleId},#{at.menuId},#{at.createTime}
     </sql>
 
     <sql id="Set_Not_Null_List">
         <set>
+            <if test="ut.mrId != null">
+                mr_id = #{ut.mrId},
+            </if>
             <if test="ut.roleId != null">
                 role_id = #{ut.roleId},
             </if>
-            <if test="ut.roleName != null">
-                role_name = #{ut.roleName},
+            <if test="ut.menuId != null">
+                menu_id = #{ut.menuId},
             </if>
             <if test="ut.createTime != null">
-                create_time = #{ut.createTime},
-            </if>
-            <if test="ut.isEnable != null">
-                is_enable = #{ut.isEnable}
+                create_time = #{ut.createTime}
             </if>
         </set>
     </sql>
 
     <sql id="Set_With_Null_List">
         <set>
+            mr_id = #{ut.mrId},
             role_id = #{ut.roleId},
-            role_name = #{ut.roleName},
-            create_time = #{ut.createTime},
-            is_enable = #{ut.isEnable}
+            menu_id = #{ut.menuId},
+            create_time = #{ut.createTime}
         </set>
     </sql>
 
@@ -65,17 +65,17 @@
     </sql>
 
     <sql id="where_sql">
+        <if test="st.mrId != null">
+            AND mr_id = #{st.mrId}
+        </if>
         <if test="st.roleId != null">
             AND role_id = #{st.roleId}
         </if>
-        <if test="st.roleName != null">
-            AND role_name = #{st.roleName}
+        <if test="st.menuId != null">
+            AND menu_id = #{st.menuId}
         </if>
         <if test="st.createTime != null">
             AND create_time = #{st.createTime}
-        </if>
-        <if test="st.isEnable != null">
-            AND is_enable = #{st.isEnable}
         </if>
         <if test="st.conditGroups != null">
             <foreach collection="st.conditGroups" item="conditGroup" separator=" ">
@@ -100,20 +100,20 @@
 
     <!--获取最大的主键-->
     <select id="selectMaxId" resultType="java.lang.Long">
-        select IFNULL(max(role_id), 0) from `com_role`
+        select IFNULL(max(mr_id), 0) from `com_menu_role`
     </select>
 
     <!--根据主键获取对象-->
     <select id="selectById" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from com_role
+        select <include refid="Base_Column_List" /> from com_menu_role
         <where>
-            AND role_id = #{roleId}
+            AND mr_id = #{mrId}
         </where>
     </select>
 
     <!--查询列表-->
     <select id="selectList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from com_role
+        select <include refid="Base_Column_List" /> from com_menu_role
         <where>
             <include refid="where_sql" />
         </where>
@@ -134,7 +134,7 @@
         <foreach collection="fl" item="field" separator=",">
             ${field}
         </foreach>
-        from com_role
+        from com_menu_role
         <where>
             <include refid="where_sql" />
         </where>
@@ -151,7 +151,7 @@
 
     <!--查询列表总数-->
     <select id="selectCount" resultType="java.lang.Long">
-        select count(1) from com_role
+        select count(1) from com_menu_role
         <where>
             <include refid="where_sql" />
         </where>
@@ -159,9 +159,9 @@
 
     <!--根据ID列表获取记录列表-->
     <select id="selectBatchIds" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" /> from com_role
+        select <include refid="Base_Column_List" /> from com_menu_role
         <where>
-        role_id in
+        mr_id in
             <foreach collection="list" open="(" close=")" separator="," item="item">
             #{item}
             </foreach>
@@ -170,13 +170,13 @@
 
     <!--插入对象-->
     <insert id="add">
-        insert into com_role(<include refid="Base_Column_List" />)
+        insert into com_menu_role(<include refid="Base_Column_List" />)
         values(<include refid="Base_Object_List" />)
     </insert>
 
     <!--批量插入对象-->
     <insert id="addBatch">
-        insert into com_role(<include refid="Base_Column_List" />)
+        insert into com_menu_role(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" index="index" item="at" separator=",">
             (<include refid="Base_Object_List" />)
@@ -185,47 +185,47 @@
 
     <!--更新对象-->
     <update id="updateNotNull">
-        update com_role
+        update com_menu_role
         <include refid="Set_Not_Null_List" />
         <where>
-            AND role_id = #{ut.roleId}
+            AND mr_id = #{ut.mrId}
         </where>
     </update>
 
     <!--批量更新对象-->
     <update id="updateBatchNotNull">
         <foreach collection="list" separator=";" item="ut">
-            update com_role
+            update com_menu_role
             <include refid="Set_Not_Null_List" />
             <where>
-                AND role_id = #{ut.roleId}
+                AND mr_id = #{ut.mrId}
             </where>
         </foreach>
     </update>
 
     <!--更新对象(全更新)-->
     <update id="updateWithNull">
-        update com_role
+        update com_menu_role
         <include refid="Set_With_Null_List" />
         <where>
-            AND role_id = #{ut.roleId}
+            AND mr_id = #{ut.mrId}
         </where>
     </update>
 
     <!--批量更新对象(全更新)-->
     <update id="updateBatchWithNull">
         <foreach collection="list" separator=";" item="ut">
-            update com_role
+            update com_menu_role
             <include refid="Set_With_Null_List" />
             <where>
-                AND role_id = #{ut.roleId}
+                AND mr_id = #{ut.mrId}
             </where>
         </foreach>
     </update>
 
     <!--更新对象,根据查询条件更新-->
     <update id="updateByMap">
-        update com_role
+        update com_menu_role
         <set>
             <foreach collection="um" index="key" item="value" separator=",">
                 ${key} = #{value}
@@ -238,7 +238,7 @@
 
     <!--根据查询条件删除记录-->
     <delete id="delete">
-        delete from com_role
+        delete from com_menu_role
         <where>
             <include refid="where_sql" />
         </where>
@@ -246,17 +246,17 @@
 
     <!--根据主键删除对象-->
     <delete id="deleteById">
-        delete from com_role
+        delete from com_menu_role
         <where>
-            AND role_id = #{roleId}
+            AND mr_id = #{mrId}
         </where>
     </delete>
 
     <!-- 批量删除对象 -->
     <delete id="deleteBatchIds">
-        delete from com_role
+        delete from com_menu_role
         <where>
-            role_id in
+            mr_id in
             <foreach collection="list" open="(" close=")" separator="," item="item">
                 #{item}
             </foreach>

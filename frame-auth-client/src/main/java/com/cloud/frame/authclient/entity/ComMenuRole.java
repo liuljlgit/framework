@@ -21,18 +21,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel("ComUserRole")
-public class ComUserRole extends BaseQuery {
+@ApiModel("ComMenuRole")
+public class ComMenuRole extends BaseQuery {
 
 	@ApiModelProperty("主键")
     @PrimaryKey
-    private Long urId;
+    private Long mrId;
 
-	@ApiModelProperty("用户主键")
-    private Long userId;
-
-	@ApiModelProperty("权限主键")
+	@ApiModelProperty("角色主键")
     private Long roleId;
+
+	@ApiModelProperty("菜单主键")
+    private Long menuId;
 
 	@ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
@@ -40,11 +40,7 @@ public class ComUserRole extends BaseQuery {
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
-    public static final transient String UR_ID = "ur_id";
-
-    @JsonIgnore
-    @ApiModelProperty(hidden = true)
-    public static final transient String USER_ID = "user_id";
+    public static final transient String MR_ID = "mr_id";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -52,39 +48,27 @@ public class ComUserRole extends BaseQuery {
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
+    public static final transient String MENU_ID = "menu_id";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     public static final transient String CREATE_TIME = "create_time";
 
 
-    public void andUrId(Opt opt) {
-        addConditGroup(UR_ID,opt);
+    public void andMrId(Opt opt) {
+        addConditGroup(MR_ID,opt);
     }
 
-    public void andUrId(Opt opt,Long urId) {
-        addConditGroup(UR_ID,opt,urId);
+    public void andMrId(Opt opt,Long mrId) {
+        addConditGroup(MR_ID,opt,mrId);
     }
 
-    public void andUrId(Opt opt,List<Long> list) {
-        addConditGroup(UR_ID,opt,list);
+    public void andMrId(Opt opt,List<Long> list) {
+        addConditGroup(MR_ID,opt,list);
     }
 
-    public void andUrId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(UR_ID,opt,firstParam,secondParam);
-    }
-
-    public void andUserId(Opt opt) {
-        addConditGroup(USER_ID,opt);
-    }
-
-    public void andUserId(Opt opt,Long userId) {
-        addConditGroup(USER_ID,opt,userId);
-    }
-
-    public void andUserId(Opt opt,List<Long> list) {
-        addConditGroup(USER_ID,opt,list);
-    }
-
-    public void andUserId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(USER_ID,opt,firstParam,secondParam);
+    public void andMrId(Opt opt,Long firstParam,Long secondParam) {
+        addConditGroup(MR_ID,opt,firstParam,secondParam);
     }
 
     public void andRoleId(Opt opt) {
@@ -101,6 +85,22 @@ public class ComUserRole extends BaseQuery {
 
     public void andRoleId(Opt opt,Long firstParam,Long secondParam) {
         addConditGroup(ROLE_ID,opt,firstParam,secondParam);
+    }
+
+    public void andMenuId(Opt opt) {
+        addConditGroup(MENU_ID,opt);
+    }
+
+    public void andMenuId(Opt opt,Long menuId) {
+        addConditGroup(MENU_ID,opt,menuId);
+    }
+
+    public void andMenuId(Opt opt,List<Long> list) {
+        addConditGroup(MENU_ID,opt,list);
+    }
+
+    public void andMenuId(Opt opt,Long firstParam,Long secondParam) {
+        addConditGroup(MENU_ID,opt,firstParam,secondParam);
     }
 
     public void andCreateTime(Opt opt) {

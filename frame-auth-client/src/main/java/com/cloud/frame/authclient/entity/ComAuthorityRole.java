@@ -1,37 +1,34 @@
 package com.cloud.frame.authclient.entity;
 
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
-import com.cloud.ftl.ftlbasic.enums.Opt;
-import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.List;
+import java.math.BigDecimal;
+import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
+import com.cloud.ftl.ftlbasic.enums.Opt;
+import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel("ComUserRole")
-public class ComUserRole extends BaseQuery {
+@ApiModel("ComAuthorityRole")
+public class ComAuthorityRole extends BaseQuery {
 
 	@ApiModelProperty("主键")
     @PrimaryKey
-    private Long urId;
-
-	@ApiModelProperty("用户主键")
-    private Long userId;
+    private Long arId;
 
 	@ApiModelProperty("权限主键")
+    private Long authId;
+
+	@ApiModelProperty("角色主键")
     private Long roleId;
 
 	@ApiModelProperty("创建时间")
@@ -40,11 +37,11 @@ public class ComUserRole extends BaseQuery {
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
-    public static final transient String UR_ID = "ur_id";
+    public static final transient String AR_ID = "ar_id";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
-    public static final transient String USER_ID = "user_id";
+    public static final transient String AUTH_ID = "auth_id";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -55,36 +52,36 @@ public class ComUserRole extends BaseQuery {
     public static final transient String CREATE_TIME = "create_time";
 
 
-    public void andUrId(Opt opt) {
-        addConditGroup(UR_ID,opt);
+    public void andArId(Opt opt) {
+        addConditGroup(AR_ID,opt);
     }
 
-    public void andUrId(Opt opt,Long urId) {
-        addConditGroup(UR_ID,opt,urId);
+    public void andArId(Opt opt,Long arId) {
+        addConditGroup(AR_ID,opt,arId);
     }
 
-    public void andUrId(Opt opt,List<Long> list) {
-        addConditGroup(UR_ID,opt,list);
+    public void andArId(Opt opt,List<Long> list) {
+        addConditGroup(AR_ID,opt,list);
     }
 
-    public void andUrId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(UR_ID,opt,firstParam,secondParam);
+    public void andArId(Opt opt,Long firstParam,Long secondParam) {
+        addConditGroup(AR_ID,opt,firstParam,secondParam);
     }
 
-    public void andUserId(Opt opt) {
-        addConditGroup(USER_ID,opt);
+    public void andAuthId(Opt opt) {
+        addConditGroup(AUTH_ID,opt);
     }
 
-    public void andUserId(Opt opt,Long userId) {
-        addConditGroup(USER_ID,opt,userId);
+    public void andAuthId(Opt opt,Long authId) {
+        addConditGroup(AUTH_ID,opt,authId);
     }
 
-    public void andUserId(Opt opt,List<Long> list) {
-        addConditGroup(USER_ID,opt,list);
+    public void andAuthId(Opt opt,List<Long> list) {
+        addConditGroup(AUTH_ID,opt,list);
     }
 
-    public void andUserId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(USER_ID,opt,firstParam,secondParam);
+    public void andAuthId(Opt opt,Long firstParam,Long secondParam) {
+        addConditGroup(AUTH_ID,opt,firstParam,secondParam);
     }
 
     public void andRoleId(Opt opt) {

@@ -1,15 +1,17 @@
 package com.cloud.frame.frameauth.dao;
 
-import com.cloud.frame.authclient.entity.ComRole;
-import com.cloud.ftl.ftlbasic.mapper.IBaseMapper;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+import com.cloud.ftl.ftlbasic.mapper.IBaseMapper;
+import org.apache.ibatis.annotations.Param;
+import com.cloud.frame.authclient.entity.ComForm;
 
 /**
-  * 接口类 IComRoleDao
+  * 接口类 IComFormDao
   * @author lijun
   */
 @Repository
-public interface IComRoleDao extends IBaseMapper<ComRole>{
+public interface IComFormDao extends IBaseMapper<ComForm>{
 
     //------------------------ custom code begin ------------------------//
         
