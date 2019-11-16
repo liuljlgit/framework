@@ -10,17 +10,94 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2019-11-12 16:20:35
+Date: 2019-11-16 15:18:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for com_authority
+-- ----------------------------
+DROP TABLE IF EXISTS `com_authority`;
+CREATE TABLE `com_authority` (
+  `auth_id` bigint(20) NOT NULL COMMENT '主键',
+  `auth_name` varchar(50) DEFAULT NULL COMMENT '权限名称',
+  `permit_urls` varchar(1000) DEFAULT NULL COMMENT '允许通过路径，逗号分隔',
+  `forbid_urls` varchar(1000) DEFAULT NULL COMMENT '禁止通过路径，逗号分隔',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
+  PRIMARY KEY (`auth_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='6、权限表';
+
+-- ----------------------------
+-- Records of com_authority
+-- ----------------------------
+INSERT INTO `com_authority` VALUES ('1000001', '超级管理员', '/holiday/**,/auth/**', '/**', '2019-10-17 11:37:30', '1');
+
+-- ----------------------------
+-- Table structure for com_authority_role
+-- ----------------------------
+DROP TABLE IF EXISTS `com_authority_role`;
+CREATE TABLE `com_authority_role` (
+  `ar_id` bigint(20) NOT NULL COMMENT '主键',
+  `auth_id` bigint(20) DEFAULT NULL COMMENT '权限主键',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '角色主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`ar_id`),
+  UNIQUE KEY `IDX_AUTH_ROLE` (`auth_id`,`role_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='7、权限角色关联表';
+
+-- ----------------------------
+-- Records of com_authority_role
+-- ----------------------------
+INSERT INTO `com_authority_role` VALUES ('1000001', '1000001', '1000001', '2019-11-16 14:25:21');
+INSERT INTO `com_authority_role` VALUES ('1000002', '1000001', '1000002', '2019-11-16 14:26:08');
+INSERT INTO `com_authority_role` VALUES ('1000003', '1000001', '1000003', '2019-11-16 14:27:30');
+INSERT INTO `com_authority_role` VALUES ('1000004', '1000001', '1000004', '2019-11-16 14:35:50');
+INSERT INTO `com_authority_role` VALUES ('1000005', '1000001', '1000005', '2019-11-16 14:36:02');
+INSERT INTO `com_authority_role` VALUES ('1000006', '1000001', '1000006', '2019-11-16 14:36:13');
+INSERT INTO `com_authority_role` VALUES ('1000007', '1000001', '1000007', '2019-11-16 14:36:25');
+INSERT INTO `com_authority_role` VALUES ('1000008', '1000001', '1000008', '2019-11-16 14:36:40');
+INSERT INTO `com_authority_role` VALUES ('1000009', '1000001', '1000009', '2019-11-16 14:36:52');
+INSERT INTO `com_authority_role` VALUES ('1000010', '1000001', '1000010', '2019-11-16 14:37:06');
+INSERT INTO `com_authority_role` VALUES ('1000011', '1000001', '1000011', '2019-11-16 14:37:21');
+INSERT INTO `com_authority_role` VALUES ('1000012', '1000001', '1000012', '2019-11-16 14:37:33');
+INSERT INTO `com_authority_role` VALUES ('1000013', '1000001', '1000013', '2019-11-16 14:37:46');
+INSERT INTO `com_authority_role` VALUES ('1000014', '1000001', '1000014', '2019-11-16 14:38:00');
+INSERT INTO `com_authority_role` VALUES ('1000015', '1000001', '1000015', '2019-11-16 14:38:12');
+INSERT INTO `com_authority_role` VALUES ('1000016', '1000001', '1000016', '2019-11-16 14:38:23');
+
+-- ----------------------------
+-- Table structure for com_form
+-- ----------------------------
+DROP TABLE IF EXISTS `com_form`;
+CREATE TABLE `com_form` (
+  `form_id` bigint(20) NOT NULL COMMENT '主键',
+  `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
+  `form_name` varchar(50) DEFAULT NULL COMMENT '表单名称',
+  `descp` varchar(50) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`form_id`),
+  UNIQUE KEY `IDX_FORM_NAME` (`form_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='8、表单权限管理表';
+
+-- ----------------------------
+-- Records of com_form
+-- ----------------------------
+INSERT INTO `com_form` VALUES ('1000001', '1000001', 'userEditForm03', '编辑表单');
+INSERT INTO `com_form` VALUES ('1000002', '1000001', 'roleEditForm03', '角色表单');
+INSERT INTO `com_form` VALUES ('1000003', '1000001', 'roleAuthForm03', '角色权限');
+INSERT INTO `com_form` VALUES ('1000004', '1000002', 'deptEditForm03', '部门表单');
+INSERT INTO `com_form` VALUES ('1000005', '1000002', 'menuEditForm01', '菜单表单');
+INSERT INTO `com_form` VALUES ('1000006', '1000002', 'myCustomer', '我的客户');
+INSERT INTO `com_form` VALUES ('1000007', '1000003', 'publicCustomer', '客户公海');
+INSERT INTO `com_form` VALUES ('1000008', '1000003', 'contact', '联系人');
 
 -- ----------------------------
 -- Table structure for com_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `com_menu`;
 CREATE TABLE `com_menu` (
-  `menu_id` bigint(20) NOT NULL,
+  `menu_id` bigint(20) NOT NULL COMMENT '主键',
   `menu_name` varchar(50) DEFAULT NULL COMMENT '菜单名',
   `par_menu_id` bigint(20) DEFAULT NULL COMMENT '父级菜单id',
   `url` varchar(255) DEFAULT NULL COMMENT '链接',
@@ -53,13 +130,45 @@ INSERT INTO `com_menu` VALUES ('1000015', '调频市场数据', '1000005', '/dat
 INSERT INTO `com_menu` VALUES ('1000016', '调频结算数据', '1000005', '/dataManage/settlementMarket', '', '5', '2019-11-04 11:20:02', '1');
 
 -- ----------------------------
+-- Table structure for com_menu_role
+-- ----------------------------
+DROP TABLE IF EXISTS `com_menu_role`;
+CREATE TABLE `com_menu_role` (
+  `mr_id` bigint(20) NOT NULL COMMENT '主键',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '角色主键',
+  `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`mr_id`),
+  UNIQUE KEY `IDX_MENU_ROLE` (`role_id`,`menu_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='5、角色菜单关联表';
+
+-- ----------------------------
+-- Records of com_menu_role
+-- ----------------------------
+INSERT INTO `com_menu_role` VALUES ('1000001', '1000001', '1000001', '2019-11-16 14:25:21');
+INSERT INTO `com_menu_role` VALUES ('1000002', '1000001', '1000002', '2019-11-16 14:26:08');
+INSERT INTO `com_menu_role` VALUES ('1000003', '1000001', '1000003', '2019-11-16 14:27:30');
+INSERT INTO `com_menu_role` VALUES ('1000004', '1000001', '1000004', '2019-11-16 14:35:50');
+INSERT INTO `com_menu_role` VALUES ('1000005', '1000001', '1000005', '2019-11-16 14:36:02');
+INSERT INTO `com_menu_role` VALUES ('1000006', '1000001', '1000006', '2019-11-16 14:36:13');
+INSERT INTO `com_menu_role` VALUES ('1000007', '1000001', '1000007', '2019-11-16 14:36:25');
+INSERT INTO `com_menu_role` VALUES ('1000008', '1000001', '1000008', '2019-11-16 14:36:40');
+INSERT INTO `com_menu_role` VALUES ('1000009', '1000001', '1000009', '2019-11-16 14:36:52');
+INSERT INTO `com_menu_role` VALUES ('1000010', '1000001', '1000010', '2019-11-16 14:37:06');
+INSERT INTO `com_menu_role` VALUES ('1000011', '1000001', '1000011', '2019-11-16 14:37:21');
+INSERT INTO `com_menu_role` VALUES ('1000012', '1000001', '1000012', '2019-11-16 14:37:33');
+INSERT INTO `com_menu_role` VALUES ('1000013', '1000001', '1000013', '2019-11-16 14:37:46');
+INSERT INTO `com_menu_role` VALUES ('1000014', '1000001', '1000014', '2019-11-16 14:38:00');
+INSERT INTO `com_menu_role` VALUES ('1000015', '1000001', '1000015', '2019-11-16 14:38:12');
+INSERT INTO `com_menu_role` VALUES ('1000016', '1000001', '1000016', '2019-11-16 14:38:23');
+
+-- ----------------------------
 -- Table structure for com_role
 -- ----------------------------
 DROP TABLE IF EXISTS `com_role`;
 CREATE TABLE `com_role` (
-  `role_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL COMMENT '主键',
   `role_name` varchar(50) DEFAULT NULL COMMENT '角色名',
-  `menu_ids` varchar(1000) DEFAULT NULL COMMENT '对应的菜单id，前后逗号分隔，如”,2,22,11,221,“''',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
   PRIMARY KEY (`role_id`)
@@ -68,19 +177,19 @@ CREATE TABLE `com_role` (
 -- ----------------------------
 -- Records of com_role
 -- ----------------------------
-INSERT INTO `com_role` VALUES ('1000001', '超级管理员', '1000001,1000002,1000003,1000004,1000005,1000006,1000007,1000008,1000009,1000010,1000011,1000012,1000013,1000014,1000015,1000016', '2019-10-17 11:37:30', '1');
+INSERT INTO `com_role` VALUES ('1000001', '超级管理员', '2019-10-17 11:37:30', '1');
 
 -- ----------------------------
 -- Table structure for com_user
 -- ----------------------------
 DROP TABLE IF EXISTS `com_user`;
 CREATE TABLE `com_user` (
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL COMMENT '主键',
   `account` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '账号（手机号）',
   `user_name` varchar(50) DEFAULT NULL COMMENT '用户名',
   `password` varchar(64) DEFAULT NULL COMMENT '密码（bcrypt加密）',
   `status` tinyint(3) DEFAULT '1' COMMENT '状态：正常/禁用',
-  `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='1、用户表';
 
@@ -99,15 +208,16 @@ INSERT INTO `com_user` VALUES ('1000055', '13168745249', '荣权', '$2a$10$t/4sb
 INSERT INTO `com_user` VALUES ('1000056', '1380000001', 'joe', '$2a$10$lxkc3nC23oyCVUYFGuygB.jYAFXGGGEFtw7LCNSf4/fjUqmxBzSs2', '1', '2019-11-04 17:16:11');
 INSERT INTO `com_user` VALUES ('1000057', '13400000001', 'abc', '$2a$10$0hQ1tULCtqWH9R.mZInKUO9Cx6OPDpeVXeW12sfQq2UYNyRYbUiR2', '1', '2019-11-04 17:20:32');
 INSERT INTO `com_user` VALUES ('1000058', '18826222492', 'test1', '$2a$10$Pb3oiXXCi5kMXbt53Z/o/.CKs7yUtmfKEdHFHLv/Rklx4nIY0M1ea', '1', '2019-11-06 16:03:45');
+INSERT INTO `com_user` VALUES ('1000059', '18826222493', 'test2', '$2a$10$J4TRqiizgUqpd.bCXx.EOOHXyCJ3NeAKloOHGlnalsPZo5WPoR.jm', '1', '2019-11-12 18:18:53');
 
 -- ----------------------------
 -- Table structure for com_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `com_user_role`;
 CREATE TABLE `com_user_role` (
-  `ur_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
-  `role_id` bigint(20) DEFAULT NULL,
+  `ur_id` bigint(20) NOT NULL COMMENT '主键',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户主键',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '权限主键',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`ur_id`),
   UNIQUE KEY `com_user_role_index` (`user_id`,`role_id`)
@@ -127,6 +237,7 @@ INSERT INTO `com_user_role` VALUES ('1000008', '1000054', '1000001', '2019-11-04
 INSERT INTO `com_user_role` VALUES ('1000009', '1000055', '1000001', '2019-11-04 17:12:37');
 INSERT INTO `com_user_role` VALUES ('1000010', '1000056', '1000001', '2019-11-04 17:16:11');
 INSERT INTO `com_user_role` VALUES ('1000011', '1000057', '1000001', '2019-11-04 17:20:32');
+INSERT INTO `com_user_role` VALUES ('1000012', '1000059', '1000001', '2019-11-15 17:25:27');
 
 -- ----------------------------
 -- Table structure for gateway_route
