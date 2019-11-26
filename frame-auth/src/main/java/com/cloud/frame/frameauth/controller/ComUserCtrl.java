@@ -1,15 +1,9 @@
 package com.cloud.frame.frameauth.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cloud.frame.authclient.entity.ComAuthority;
-import com.cloud.frame.authclient.entity.ComAuthorityRole;
-import com.cloud.frame.authclient.entity.ComRole;
-import com.cloud.frame.authclient.entity.ComUser;
+import com.cloud.frame.authclient.entity.*;
 import com.cloud.frame.authclient.feign.ComUserFeign;
-import com.cloud.frame.frameauth.service.IComAuthorityRoleService;
-import com.cloud.frame.frameauth.service.IComAuthorityService;
-import com.cloud.frame.frameauth.service.IComRoleService;
-import com.cloud.frame.frameauth.service.IComUserService;
+import com.cloud.frame.frameauth.service.*;
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
@@ -27,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -50,6 +45,9 @@ public class ComUserCtrl implements ComUserFeign , SecurityFeign {
 
     @Autowired
     private IComAuthorityService comAuthorityService;
+
+    @Autowired
+    private IGatewayRouteService gatewayRouteService;
 
     @Override
     public CommonResp<ComUser> selectById(@RequestParam("userId") @NotNull Long userId) {
@@ -130,5 +128,12 @@ public class ComUserCtrl implements ComUserFeign , SecurityFeign {
             roleAuthoritysMap.put(roleName,authObj.toJSONString());
         }
         return roleAuthoritysMap;
+    }
+
+    @Override
+    public Map<Object, Object> loadRouteSuffixInfo() {
+        GatewayRoute gatewayRoute = GatewayRoute.builder().status(BigDecimal.ONE).build();
+        return gatewayRouteService.selectList(gatewayRoute).stream()
+                .collect(Collectors.toMap(GatewayRoute::getRouteId,GatewayRoute::getRegexpUrl));
     }
 }

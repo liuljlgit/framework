@@ -25,4 +25,7 @@ public interface SecurityFeign {
     @ApiOperation(value = "获取所有用户角色权限信息" , notes = "author: llj")
     Map<Object, Object> loadRoleAuthoritys();
 
+    @GetMapping(value = "/comuser/routesuffixinfo")
+    @ApiOperation(value = "获取路由前缀信息" , notes = "author: llj")
+    Map<Object, Object> loadRouteSuffixInfo();
 }

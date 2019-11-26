@@ -29,13 +29,16 @@ import java.util.List;
  */
 @Configuration
 @EnableResourceServer
-@EnableConfigurationProperties({IgnoreUrl.class})
+@EnableConfigurationProperties({IgnoreUrl.class,ServerConfig.class})
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     public static List<String> ignoreUris = Lists.newArrayList();
 
     @Autowired
     private IgnoreUrl ignoreUrl;
+
+    @Autowired
+    private ServerConfig serverConfig;
 
     @Autowired
     private AccessDecisionVoter accessDecisionVoter;
@@ -78,7 +81,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean(AccessDecisionVoter.class)
     public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate,SecurityFeign securityFeign){
-        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign);
+        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign,serverConfig.getName());
     }
 
 }

@@ -29,9 +29,12 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
 
     private SecurityFeign securityFeign;
 
-    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign) {
+    private String serverName;
+
+    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign, String serverName) {
         this.redisTemplate = redisTemplate;
         this.securityFeign = securityFeign;
+        this.serverName = serverName;
     }
 
     @Override
@@ -41,10 +44,17 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         //把权限->请求路径列表的数据放到redis中进行权限验证,每次从redis中获取数据进行验证
         String servletPath = fi.getHttpRequest().getServletPath();
-        Map<Object, Object> roleMap;
-        if(redisTemplate.hasKey(RoleConst.ROLE_MAP_KEY)) {
-            roleMap = redisTemplate.opsForHash().entries(RoleConst.ROLE_MAP_KEY);
-        } else {
+        //获取服务名->前缀信息
+        Map<Object, Object> routeMap = redisTemplate.opsForHash().entries(RoleConst.ROUTE_MAP_KEY);
+        if(routeMap.size() == 0 && !redisTemplate.hasKey(RoleConst.ROUTE_MAP_KEY)){
+            routeMap = securityFeign.loadRouteSuffixInfo();
+            redisTemplate.opsForHash().putAll(RoleConst.ROUTE_MAP_KEY,routeMap);
+        }
+        servletPath = routeMap.getOrDefault(serverName,"") + servletPath;
+
+        //获取角色->权限信息
+        Map<Object, Object> roleMap = redisTemplate.opsForHash().entries(RoleConst.ROLE_MAP_KEY);
+        if(roleMap.size() == 0 && !redisTemplate.hasKey(RoleConst.ROLE_MAP_KEY)){
             roleMap = securityFeign.loadRoleAuthoritys();
             redisTemplate.opsForHash().putAll(RoleConst.ROLE_MAP_KEY,roleMap);
         }

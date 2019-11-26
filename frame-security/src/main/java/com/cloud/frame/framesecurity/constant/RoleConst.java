@@ -10,4 +10,8 @@ public interface RoleConst {
 
     String ROLE_AUTHORITY = "ROLE:%s";
 
+    String ROUTE_MAP_KEY = "ROUTE_MAP_KEY";
+
+    String ROUTE_SERVERNAME = "ROUTE:%s";
+
 }
