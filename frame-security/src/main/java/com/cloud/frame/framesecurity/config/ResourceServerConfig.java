@@ -1,5 +1,6 @@
 package com.cloud.frame.framesecurity.config;
 
+import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.frame.framesecurity.handler.AuthExceptionEntryPoint;
 import com.cloud.frame.framesecurity.handler.CustomAccessDeniedHandler;
 import com.cloud.frame.framesecurity.handler.PermissionAccessDecisionVoter;
@@ -42,6 +43,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
+    @Autowired
+    private SecurityFeign securityFeign;
+
     @Override
     @SuppressWarnings("unchecked")
     public void configure(HttpSecurity http) throws Exception {
@@ -73,8 +77,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     @Bean
     @ConditionalOnMissingBean(AccessDecisionVoter.class)
-    public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate){
-        return new PermissionAccessDecisionVoter(redisTemplate);
+    public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate,SecurityFeign securityFeign){
+        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign);
     }
 
 }

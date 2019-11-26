@@ -6,6 +6,8 @@ package com.cloud.frame.framesecurity.constant;
  */
 public interface RoleConst {
 
-    String ROLE_ = "ROLE:%s";
+    String ROLE_MAP_KEY = "ROLE_MAP_KEY";
+
+    String ROLE_AUTHORITY = "ROLE:%s";
 
 }
