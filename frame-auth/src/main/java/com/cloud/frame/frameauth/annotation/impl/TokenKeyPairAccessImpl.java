@@ -1,4 +1,4 @@
-package com.cloud.frame.framesecurity.annotation.impl;
+package com.cloud.frame.frameauth.annotation.impl;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

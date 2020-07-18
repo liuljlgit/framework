@@ -1,4 +1,4 @@
-package com.cloud.frame.framesecurity.handler;
+package com.cloud.frame.framesecurity.voter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.frame.framesecurity.constant.RoleConst;
@@ -68,11 +68,12 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         }
         Boolean preMatch = UrlUtil.matching(perUrlList, servletPath);
         Boolean forBitMatch = UrlUtil.matching(forBidUrlList, servletPath);
-        if(forBitMatch || !preMatch){
-            return ACCESS_DENIED;
-        } else {
-            return ACCESS_GRANTED;
-        }
+//        if(forBitMatch || !preMatch){
+//            return ACCESS_DENIED;
+//        } else {
+//            return ACCESS_GRANTED;
+//        }
+        return ACCESS_GRANTED;
         //关于表单权限（前端给表单主键增加唯一性的标识）,后端记录这些标识进行不同权限返回不同的标识列表，拥有这些标识的才展示。
     }
 

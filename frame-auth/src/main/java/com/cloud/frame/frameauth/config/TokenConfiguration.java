@@ -1,6 +1,6 @@
 package com.cloud.frame.frameauth.config;
 
-import com.cloud.frame.framesecurity.annotation.EnableTokenKeyPairAccess;
+import com.cloud.frame.frameauth.annotation.EnableTokenKeyPairAccess;
 import com.cloud.frame.framesecurity.entity.SecurityTokenEnhancer;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;

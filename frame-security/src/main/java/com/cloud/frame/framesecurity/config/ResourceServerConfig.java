@@ -1,9 +1,9 @@
 package com.cloud.frame.framesecurity.config;
 
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
-import com.cloud.frame.framesecurity.handler.AuthExceptionEntryPoint;
-import com.cloud.frame.framesecurity.handler.CustomAccessDeniedHandler;
-import com.cloud.frame.framesecurity.handler.PermissionAccessDecisionVoter;
+import com.cloud.frame.framesecurity.handler.AuthExceptionHandler;
+import com.cloud.frame.framesecurity.handler.AccessDeniedExceptionHandler;
+import com.cloud.frame.framesecurity.voter.PermissionAccessDecisionVoter;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -57,7 +57,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
         webExpressionVoter.setExpressionHandler(new OAuth2WebSecurityExpressionHandler());
         http.csrf().disable()
-            .exceptionHandling().authenticationEntryPoint(new AuthExceptionEntryPoint())//不存在access_token时候响应
+            .exceptionHandling().authenticationEntryPoint(new AuthExceptionHandler())//不存在access_token时候响应
             .and()
                 .authorizeRequests()
                 .antMatchers(uri.toArray(new String[uri.size()])).permitAll()//忽略鉴权的uri
@@ -70,8 +70,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.authenticationEntryPoint(new AuthExceptionEntryPoint())//oauth2异常处理
-                .accessDeniedHandler(new CustomAccessDeniedHandler());//鉴权失败异常处理
+        resources.authenticationEntryPoint(new AuthExceptionHandler())//oauth2异常处理
+                .accessDeniedHandler(new AccessDeniedExceptionHandler());//鉴权失败异常处理
     }
 
     /**

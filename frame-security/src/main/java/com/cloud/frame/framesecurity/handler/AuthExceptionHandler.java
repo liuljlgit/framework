@@ -19,24 +19,19 @@ import java.util.Map;
  * @author lijun
  */
 @Slf4j
-public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
+public class AuthExceptionHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        log.error("鉴权失败",authException);
+        log.error("401认证失败",authException);
         Map<String, Object> map = new HashMap<String, Object>();
         Throwable cause = authException.getCause();
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
         try {
-            if(cause instanceof InvalidTokenException) {
-                response.setStatus(CodeEnum.EXEC_UNAUTHORIZED.getCode());
-                response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_UNAUTHORIZED)));
-            }else{
-                response.setStatus(CodeEnum.EXEC_FORBIDDEN.getCode());
-                response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_FORBIDDEN)));
-            }
+            response.setStatus(CodeEnum.EXEC_UNAUTHORIZED_401.getCode());
+            response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_UNAUTHORIZED_401)));
         } catch (IOException e) {
-            log.error("HttpServletResponse异常",e);
+            log.error("401认证失败",e);
         }
     }
 

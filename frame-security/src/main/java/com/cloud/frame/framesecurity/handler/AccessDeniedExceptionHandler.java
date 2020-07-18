@@ -15,14 +15,14 @@ import java.io.IOException;
  * @author lijun
  */
 @Slf4j
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class AccessDeniedExceptionHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        log.error("权限不足",accessDeniedException);
+        log.error("403权限不足",accessDeniedException);
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
-        response.setStatus(CodeEnum.EXEC_UNAUTHORIZED_DENY.getCode());
-        response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_UNAUTHORIZED_DENY)));
+        response.setStatus(CodeEnum.EXEC_FORBIDDEN_403.getCode());
+        response.getWriter().write(JSONObject.toJSONString(RespEntity.error(CodeEnum.EXEC_FORBIDDEN_403)));
     }
 
 }

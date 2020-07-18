@@ -1,6 +1,6 @@
-package com.cloud.frame.framesecurity.annotation;
+package com.cloud.frame.frameauth.annotation;
 
-import com.cloud.frame.framesecurity.annotation.impl.TokenKeyPairAccessImpl;
+import com.cloud.frame.frameauth.annotation.impl.TokenKeyPairAccessImpl;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
