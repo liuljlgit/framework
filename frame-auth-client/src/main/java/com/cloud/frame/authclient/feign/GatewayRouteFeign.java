@@ -1,14 +1,16 @@
 package com.cloud.frame.authclient.feign;
 
-import com.cloud.ftl.ftlbasic.webEntity.PageBean;
-import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
-import io.swagger.annotations.*;
 import com.cloud.frame.authclient.entity.GatewayRoute;
+import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
+import com.cloud.ftl.ftlbasic.webEntity.PageBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -37,5 +39,9 @@ public interface GatewayRouteFeign {
     @ApiOperation(value = "根据主键删除",notes = "author: llj")
     @ApiImplicitParam(name="grId", value="主键",required = true)
     CommonResp<Object> deleteById(@RequestParam(value="grId") @NotNull Long grId);
+
+    @GetMapping(value = "/gatewayroutes")
+    @ApiOperation(value = "刷新路由信息" , notes = "author: llj")
+    String refreshGateways();
 
 }

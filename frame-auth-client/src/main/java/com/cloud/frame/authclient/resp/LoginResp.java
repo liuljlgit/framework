@@ -11,8 +11,6 @@ import java.io.Serializable;
 @Data
 public class LoginResp implements Serializable {
 
-    private static final long serialVersionUID = -6471454018349916461L;
-
     private String access_token;
 
     private String token_type;

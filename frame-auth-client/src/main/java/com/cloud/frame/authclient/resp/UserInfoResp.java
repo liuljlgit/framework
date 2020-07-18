@@ -24,8 +24,6 @@ import java.util.List;
 @ApiModel("与用户关联的信息")
 public class UserInfoResp implements Serializable {
 
-    private static final long serialVersionUID = 7554504648724211245L;
-
     @ApiModelProperty(value = "账号")
     private String account;
 

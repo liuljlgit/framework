@@ -55,8 +55,8 @@ oauth2:
   ignore:
     uri:
       - /clientdetails/**   #oauth2客户端
-      - /oauth/**           #oauth2鉴权enpoint以及自定义端点
-      - /gatewayroute/list  #获取网关列表
+      - /oauth/**           #oauth2鉴权
+      - /gatewayroutes      #刷新路由
       - /error
       - /swagger-ui.html/**
       - /webjars/**
