@@ -42,8 +42,8 @@ security:
   oauth2:
     resource:
       id: resource_1
-      prefer-token-info: false
-      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
+#      prefer-token-info: false
+#      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
 
 oauth2:
   ignore:
