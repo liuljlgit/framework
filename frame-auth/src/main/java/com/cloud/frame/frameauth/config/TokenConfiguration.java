@@ -32,10 +32,17 @@ public class TokenConfiguration {
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
+    //可以使用redis存储token,资源服务器可以使用redis或者token进行校验，都是可以的
     @Bean(name = "tokenStore")
-    public TokenStore getRedisTokenStore(){
+    public TokenStore getTokenStore(){
         return new RedisTokenStore(redisConnectionFactory);
     }
+
+    //使用这种方式每次生成的token都是不一样的
+//    @Bean(name = "tokenStore")
+//    public TokenStore getTokenStore(){
+//        return new JwtTokenStore(jwtAccessTokenConverter);
+//    }
 
     @Bean(name = "jwtTokenEnhancer")
     @ConditionalOnMissingBean( name = "jwtTokenEnhancer")
@@ -47,7 +54,7 @@ public class TokenConfiguration {
     @Bean("cloudTokenServices")
     public DefaultTokenServices createDefaultTokenServices(ClientDetailsService clientDetailsService) {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setTokenStore(getRedisTokenStore());
+        tokenServices.setTokenStore(getTokenStore());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setReuseRefreshToken(false);  //refresh使用是否使用第一次生成的
         tokenServices.setClientDetailsService(clientDetailsService);

@@ -19,8 +19,8 @@ public class TokenKeyPairAccessImpl {
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
         KeyPair keyPair = new KeyStoreKeyFactory(
-                new ClassPathResource("keystore.jks"), "123456".toCharArray())
-                .getKeyPair("o2jks");
+                new ClassPathResource("oauth2-jwt.jks"), "123456".toCharArray())
+                .getKeyPair("oauth2-jwt");
         accessTokenConverter.setKeyPair(keyPair);
         return accessTokenConverter;
     }

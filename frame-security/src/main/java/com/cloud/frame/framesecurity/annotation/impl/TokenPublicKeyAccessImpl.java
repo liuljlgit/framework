@@ -1,10 +1,12 @@
 package com.cloud.frame.framesecurity.annotation.impl;
 
 import io.micrometer.core.instrument.util.IOUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
 import java.io.IOException;
 
 /**
@@ -14,6 +16,7 @@ import java.io.IOException;
 public class TokenPublicKeyAccessImpl {
 
     @Bean
+    @ConditionalOnMissingBean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         Resource resource = new ClassPathResource("public.txt");

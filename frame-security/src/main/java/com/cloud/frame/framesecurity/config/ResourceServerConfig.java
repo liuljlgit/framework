@@ -73,10 +73,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources
-                .tokenStore(tokenStore)
-                .authenticationEntryPoint(new AuthExceptionHandler())//oauth2异常处理
-                .accessDeniedHandler(new AccessDeniedExceptionHandler());//鉴权失败异常处理
+        resources.tokenStore(tokenStore)                                    //tokenStore:资源服务器进行token校验
+                .authenticationEntryPoint(new AuthExceptionHandler())       //401认证失败处理器
+                .accessDeniedHandler(new AccessDeniedExceptionHandler());   //403鉴权失败处理器
     }
 
     @Bean
