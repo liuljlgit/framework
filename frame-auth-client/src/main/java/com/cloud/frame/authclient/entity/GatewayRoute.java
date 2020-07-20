@@ -1,17 +1,21 @@
 package com.cloud.frame.authclient.entity;
 
-import java.util.Date;
-import java.util.List;
-import java.math.BigDecimal;
-import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
+import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import com.cloud.ftl.ftlbasic.constant.PatternConst;
 import com.cloud.ftl.ftlbasic.enums.Opt;
-import lombok.*;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
@@ -28,6 +32,9 @@ public class GatewayRoute extends BaseQuery {
 	@ApiModelProperty("路由ID")
     private String routeId;
 
+	@ApiModelProperty("资源服务器配置的资源id")
+    private String reourceId;
+
 	@ApiModelProperty("eureka中注册的id")
     private String instanceId;
 
@@ -38,11 +45,11 @@ public class GatewayRoute extends BaseQuery {
     private String remark;
 
 	@ApiModelProperty("创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = PatternConst.NORM_DATETIME,timezone = PatternConst.TIMEZONE)
     private Date createTime;
 
 	@ApiModelProperty("修改时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = PatternConst.NORM_DATETIME,timezone = PatternConst.TIMEZONE)
     private Date modifyTime;
 
 	@ApiModelProperty("网关请求过来的url前缀")
@@ -58,6 +65,10 @@ public class GatewayRoute extends BaseQuery {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public static final transient String ROUTE_ID = "route_id";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String REOURCE_ID = "reource_id";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -88,148 +99,124 @@ public class GatewayRoute extends BaseQuery {
     public static final transient String STATUS = "status";
 
 
-    public void andGrId(Opt opt) {
-        addConditGroup(GR_ID,opt);
+    public void andGrId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(GR_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(GR_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(GR_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ GR_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andGrId(Opt opt,Long grId) {
-        addConditGroup(GR_ID,opt,grId);
+    public void andRouteId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ROUTE_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(ROUTE_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ROUTE_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ROUTE_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andGrId(Opt opt,List<Long> list) {
-        addConditGroup(GR_ID,opt,list);
+    public void andReourceId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(REOURCE_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(REOURCE_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(REOURCE_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ REOURCE_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andGrId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(GR_ID,opt,firstParam,secondParam);
+    public void andInstanceId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(INSTANCE_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(INSTANCE_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(INSTANCE_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ INSTANCE_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRouteId(Opt opt) {
-        addConditGroup(ROUTE_ID,opt);
+    public void andPredicates(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(PREDICATES,opt);
+        } else if(values.length == 1){
+            addConditGroup(PREDICATES,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(PREDICATES,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ PREDICATES + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRouteId(Opt opt,String routeId) {
-        addConditGroup(ROUTE_ID,opt,routeId);
+    public void andRemark(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(REMARK,opt);
+        } else if(values.length == 1){
+            addConditGroup(REMARK,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(REMARK,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ REMARK + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRouteId(Opt opt,List<String> list) {
-        addConditGroup(ROUTE_ID,opt,list);
+    public void andCreateTime(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(CREATE_TIME,opt);
+        } else if(values.length == 1){
+            addConditGroup(CREATE_TIME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(CREATE_TIME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ CREATE_TIME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRouteId(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(ROUTE_ID,opt,firstParam,secondParam);
+    public void andModifyTime(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(MODIFY_TIME,opt);
+        } else if(values.length == 1){
+            addConditGroup(MODIFY_TIME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(MODIFY_TIME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ MODIFY_TIME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andInstanceId(Opt opt) {
-        addConditGroup(INSTANCE_ID,opt);
+    public void andRegexpUrl(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(REGEXP_URL,opt);
+        } else if(values.length == 1){
+            addConditGroup(REGEXP_URL,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(REGEXP_URL,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ REGEXP_URL + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andInstanceId(Opt opt,String instanceId) {
-        addConditGroup(INSTANCE_ID,opt,instanceId);
-    }
-
-    public void andInstanceId(Opt opt,List<String> list) {
-        addConditGroup(INSTANCE_ID,opt,list);
-    }
-
-    public void andInstanceId(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(INSTANCE_ID,opt,firstParam,secondParam);
-    }
-
-    public void andPredicates(Opt opt) {
-        addConditGroup(PREDICATES,opt);
-    }
-
-    public void andPredicates(Opt opt,String predicates) {
-        addConditGroup(PREDICATES,opt,predicates);
-    }
-
-    public void andPredicates(Opt opt,List<String> list) {
-        addConditGroup(PREDICATES,opt,list);
-    }
-
-    public void andPredicates(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(PREDICATES,opt,firstParam,secondParam);
-    }
-
-    public void andRemark(Opt opt) {
-        addConditGroup(REMARK,opt);
-    }
-
-    public void andRemark(Opt opt,String remark) {
-        addConditGroup(REMARK,opt,remark);
-    }
-
-    public void andRemark(Opt opt,List<String> list) {
-        addConditGroup(REMARK,opt,list);
-    }
-
-    public void andRemark(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(REMARK,opt,firstParam,secondParam);
-    }
-
-    public void andCreateTime(Opt opt) {
-        addConditGroup(CREATE_TIME,opt);
-    }
-
-    public void andCreateTime(Opt opt,Date createTime) {
-        addConditGroup(CREATE_TIME,opt,createTime);
-    }
-
-    public void andCreateTime(Opt opt,List<Date> list) {
-        addConditGroup(CREATE_TIME,opt,list);
-    }
-
-    public void andCreateTime(Opt opt,Date firstParam,Date secondParam) {
-        addConditGroup(CREATE_TIME,opt,firstParam,secondParam);
-    }
-
-    public void andModifyTime(Opt opt) {
-        addConditGroup(MODIFY_TIME,opt);
-    }
-
-    public void andModifyTime(Opt opt,Date modifyTime) {
-        addConditGroup(MODIFY_TIME,opt,modifyTime);
-    }
-
-    public void andModifyTime(Opt opt,List<Date> list) {
-        addConditGroup(MODIFY_TIME,opt,list);
-    }
-
-    public void andModifyTime(Opt opt,Date firstParam,Date secondParam) {
-        addConditGroup(MODIFY_TIME,opt,firstParam,secondParam);
-    }
-
-    public void andRegexpUrl(Opt opt) {
-        addConditGroup(REGEXP_URL,opt);
-    }
-
-    public void andRegexpUrl(Opt opt,String regexpUrl) {
-        addConditGroup(REGEXP_URL,opt,regexpUrl);
-    }
-
-    public void andRegexpUrl(Opt opt,List<String> list) {
-        addConditGroup(REGEXP_URL,opt,list);
-    }
-
-    public void andRegexpUrl(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(REGEXP_URL,opt,firstParam,secondParam);
-    }
-
-    public void andStatus(Opt opt) {
-        addConditGroup(STATUS,opt);
-    }
-
-    public void andStatus(Opt opt,BigDecimal status) {
-        addConditGroup(STATUS,opt,status);
-    }
-
-    public void andStatus(Opt opt,List<BigDecimal> list) {
-        addConditGroup(STATUS,opt,list);
-    }
-
-    public void andStatus(Opt opt,BigDecimal firstParam,BigDecimal secondParam) {
-        addConditGroup(STATUS,opt,firstParam,secondParam);
+    public void andStatus(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(STATUS,opt);
+        } else if(values.length == 1){
+            addConditGroup(STATUS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(STATUS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ STATUS + "’ 的SQL入参个数不正确 ");
+        }
     }
 
 }

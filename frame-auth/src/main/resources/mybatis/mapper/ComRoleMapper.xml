@@ -3,17 +3,20 @@
 <mapper namespace="com.cloud.frame.frameauth.dao.IComRoleDao">
     <resultMap id="BaseResultMap" type="com.cloud.frame.authclient.entity.ComRole">
         <id column="role_id" jdbcType="BIGINT" property="roleId" />
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
         <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+        <result column="permit_urls" jdbcType="VARCHAR" property="permitUrls" />
+        <result column="forbid_urls" jdbcType="VARCHAR" property="forbidUrls" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="is_enable" jdbcType="TINYINT" property="isEnable" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        role_id,role_name,create_time,is_enable
+        role_id,role_code,role_name,permit_urls,forbid_urls,create_time,is_enable
     </sql>
 
     <sql id="Base_Object_List">
-        #{at.roleId},#{at.roleName},#{at.createTime},#{at.isEnable}
+        #{at.roleId},#{at.roleCode},#{at.roleName},#{at.permitUrls},#{at.forbidUrls},#{at.createTime},#{at.isEnable}
     </sql>
 
     <sql id="Set_Not_Null_List">
@@ -21,8 +24,17 @@
             <if test="ut.roleId != null">
                 role_id = #{ut.roleId},
             </if>
+            <if test="ut.roleCode != null">
+                role_code = #{ut.roleCode},
+            </if>
             <if test="ut.roleName != null">
                 role_name = #{ut.roleName},
+            </if>
+            <if test="ut.permitUrls != null">
+                permit_urls = #{ut.permitUrls},
+            </if>
+            <if test="ut.forbidUrls != null">
+                forbid_urls = #{ut.forbidUrls},
             </if>
             <if test="ut.createTime != null">
                 create_time = #{ut.createTime},
@@ -36,7 +48,10 @@
     <sql id="Set_With_Null_List">
         <set>
             role_id = #{ut.roleId},
+            role_code = #{ut.roleCode},
             role_name = #{ut.roleName},
+            permit_urls = #{ut.permitUrls},
+            forbid_urls = #{ut.forbidUrls},
             create_time = #{ut.createTime},
             is_enable = #{ut.isEnable}
         </set>
@@ -68,8 +83,17 @@
         <if test="st.roleId != null">
             AND role_id = #{st.roleId}
         </if>
+        <if test="st.roleCode != null">
+            AND role_code = #{st.roleCode}
+        </if>
         <if test="st.roleName != null">
             AND role_name = #{st.roleName}
+        </if>
+        <if test="st.permitUrls != null">
+            AND permit_urls = #{st.permitUrls}
+        </if>
+        <if test="st.forbidUrls != null">
+            AND forbid_urls = #{st.forbidUrls}
         </if>
         <if test="st.createTime != null">
             AND create_time = #{st.createTime}
@@ -265,7 +289,7 @@
 
 
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code begin ~~~~~~~~~~~~~~~~~~~~~~-->
-        
+            
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code end ~~~~~~~~~~~~~~~~~~~~~~-->
 
 </mapper>

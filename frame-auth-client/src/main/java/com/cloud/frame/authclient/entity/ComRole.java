@@ -1,6 +1,7 @@
 package com.cloud.frame.authclient.entity;
 
 import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import com.cloud.ftl.ftlbasic.constant.PatternConst;
 import com.cloud.ftl.ftlbasic.enums.Opt;
 import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,7 +15,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -28,11 +28,20 @@ public class ComRole extends BaseQuery {
     @PrimaryKey
     private Long roleId;
 
+	@ApiModelProperty("角色编码")
+    private String roleCode;
+
 	@ApiModelProperty("角色名")
     private String roleName;
 
+	@ApiModelProperty("允许通过的url")
+    private String permitUrls;
+
+	@ApiModelProperty("拒绝通过的url")
+    private String forbidUrls;
+
 	@ApiModelProperty("创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = PatternConst.NORM_DATETIME,timezone = PatternConst.TIMEZONE)
     private Date createTime;
 
 	@ApiModelProperty("状态：正常/已删除")
@@ -44,7 +53,19 @@ public class ComRole extends BaseQuery {
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
+    public static final transient String ROLE_CODE = "role_code";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     public static final transient String ROLE_NAME = "role_name";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String PERMIT_URLS = "permit_urls";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String FORBID_URLS = "forbid_urls";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -55,68 +76,88 @@ public class ComRole extends BaseQuery {
     public static final transient String IS_ENABLE = "is_enable";
 
 
-    public void andRoleId(Opt opt) {
-        addConditGroup(ROLE_ID,opt);
+    public void andRoleId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ROLE_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(ROLE_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ROLE_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ROLE_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleId(Opt opt,Long roleId) {
-        addConditGroup(ROLE_ID,opt,roleId);
+    public void andRoleCode(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ROLE_CODE,opt);
+        } else if(values.length == 1){
+            addConditGroup(ROLE_CODE,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ROLE_CODE,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ROLE_CODE + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleId(Opt opt,List<Long> list) {
-        addConditGroup(ROLE_ID,opt,list);
+    public void andRoleName(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ROLE_NAME,opt);
+        } else if(values.length == 1){
+            addConditGroup(ROLE_NAME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ROLE_NAME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ROLE_NAME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(ROLE_ID,opt,firstParam,secondParam);
+    public void andPermitUrls(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(PERMIT_URLS,opt);
+        } else if(values.length == 1){
+            addConditGroup(PERMIT_URLS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(PERMIT_URLS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ PERMIT_URLS + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleName(Opt opt) {
-        addConditGroup(ROLE_NAME,opt);
+    public void andForbidUrls(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(FORBID_URLS,opt);
+        } else if(values.length == 1){
+            addConditGroup(FORBID_URLS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(FORBID_URLS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ FORBID_URLS + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleName(Opt opt,String roleName) {
-        addConditGroup(ROLE_NAME,opt,roleName);
+    public void andCreateTime(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(CREATE_TIME,opt);
+        } else if(values.length == 1){
+            addConditGroup(CREATE_TIME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(CREATE_TIME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ CREATE_TIME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andRoleName(Opt opt,List<String> list) {
-        addConditGroup(ROLE_NAME,opt,list);
-    }
-
-    public void andRoleName(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(ROLE_NAME,opt,firstParam,secondParam);
-    }
-
-    public void andCreateTime(Opt opt) {
-        addConditGroup(CREATE_TIME,opt);
-    }
-
-    public void andCreateTime(Opt opt,Date createTime) {
-        addConditGroup(CREATE_TIME,opt,createTime);
-    }
-
-    public void andCreateTime(Opt opt,List<Date> list) {
-        addConditGroup(CREATE_TIME,opt,list);
-    }
-
-    public void andCreateTime(Opt opt,Date firstParam,Date secondParam) {
-        addConditGroup(CREATE_TIME,opt,firstParam,secondParam);
-    }
-
-    public void andIsEnable(Opt opt) {
-        addConditGroup(IS_ENABLE,opt);
-    }
-
-    public void andIsEnable(Opt opt,Byte isEnable) {
-        addConditGroup(IS_ENABLE,opt,isEnable);
-    }
-
-    public void andIsEnable(Opt opt,List<Byte> list) {
-        addConditGroup(IS_ENABLE,opt,list);
-    }
-
-    public void andIsEnable(Opt opt,Byte firstParam,Byte secondParam) {
-        addConditGroup(IS_ENABLE,opt,firstParam,secondParam);
+    public void andIsEnable(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(IS_ENABLE,opt);
+        } else if(values.length == 1){
+            addConditGroup(IS_ENABLE,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(IS_ENABLE,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ IS_ENABLE + "’ 的SQL入参个数不正确 ");
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 package com.cloud.frame.framesecurity.voter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cloud.frame.framesecurity.constant.RoleConst;
+import com.cloud.frame.framesecurity.constant.RedisKey;
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.frame.framesecurity.util.UrlUtil;
 import com.google.common.collect.Sets;
@@ -12,15 +12,14 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
+import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * security拦截器
- *
- * @author Lulijun
+ * 请求权限校验
+ * @author liulijun
  */
 @Slf4j
 public class PermissionAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
@@ -29,12 +28,12 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
 
     private SecurityFeign securityFeign;
 
-    private String serverName;
+    private String resourceId;
 
-    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign, String serverName) {
+    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign, String resourceId) {
         this.redisTemplate = redisTemplate;
         this.securityFeign = securityFeign;
-        this.serverName = serverName;
+        this.resourceId = resourceId;
     }
 
     @Override
@@ -42,39 +41,46 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
     public int vote(Authentication authentication, FilterInvocation fi,
                     Collection<ConfigAttribute> attributes) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        //把权限->请求路径列表的数据放到redis中进行权限验证,每次从redis中获取数据进行验证
         String servletPath = fi.getHttpRequest().getServletPath();
-        //获取服务名->前缀信息
-        Map<Object, Object> routeMap = redisTemplate.opsForHash().entries(RoleConst.ROUTE_MAP_KEY);
-        if(routeMap.size() == 0 && !redisTemplate.hasKey(RoleConst.ROUTE_MAP_KEY)){
-            routeMap = securityFeign.loadRouteSuffixInfo();
-            redisTemplate.opsForHash().putAll(RoleConst.ROUTE_MAP_KEY,routeMap);
+        //获取资源服务器前缀
+        Map<Object, Object> resourceGatewayPrefixMap = redisTemplate.opsForHash().entries(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP);
+        if(Objects.isNull(resourceGatewayPrefixMap) || resourceGatewayPrefixMap.size() == 0){
+            synchronized (this){
+                resourceGatewayPrefixMap = securityFeign.getResourceGatewayPrefixMap();
+            }
         }
-        servletPath = routeMap.getOrDefault(serverName,"") + servletPath;
+        //servletPath组装
+        servletPath = resourceGatewayPrefixMap.getOrDefault(resourceId,"") + servletPath;
 
-        //获取角色->权限信息
-        Map<Object, Object> roleMap = redisTemplate.opsForHash().entries(RoleConst.ROLE_MAP_KEY);
-        if(roleMap.size() == 0 && !redisTemplate.hasKey(RoleConst.ROLE_MAP_KEY)){
-            roleMap = securityFeign.loadRoleAuthoritys();
-            redisTemplate.opsForHash().putAll(RoleConst.ROLE_MAP_KEY,roleMap);
+        //获取角色对应的URL权限
+        Map<Object, Object> rolekeyDetailsMap = redisTemplate.opsForHash().entries(RedisKey.ROLEKEY_DETAILS_MAP);
+        if(Objects.isNull(rolekeyDetailsMap) || rolekeyDetailsMap.size() == 0){
+            synchronized (this){
+                rolekeyDetailsMap = securityFeign.getRolekeyDetailsMap();
+            }
         }
+        //URL权限判断
         Set<String> perUrlList = Sets.newHashSet();
         Set<String> forBidUrlList = Sets.newHashSet();
         for (GrantedAuthority authority : authorities) {
-            String authStr = (String)roleMap.getOrDefault(authority.getAuthority(), null);
+            String authStr = (String)rolekeyDetailsMap.getOrDefault(authority.getAuthority(), null);
             JSONObject authObj = JSONObject.parseObject(authStr);
-            perUrlList.addAll(authObj.getJSONArray("perUrlList").toJavaList(String.class));
-            forBidUrlList.addAll(authObj.getJSONArray("forBidUrlList").toJavaList(String.class));
+            String permitUrls = authObj.getString("permitUrls");
+            String forbidUrls = authObj.getString("forbidUrls");
+            if(!StringUtils.isEmpty(permitUrls)){
+                perUrlList.addAll(Arrays.stream(permitUrls.split(",")).collect(Collectors.toList()));
+            }
+            if(!StringUtils.isEmpty(forbidUrls)){
+                forBidUrlList.addAll(Arrays.stream(forbidUrls.split(",")).collect(Collectors.toList()));
+            }
         }
         Boolean preMatch = UrlUtil.matching(perUrlList, servletPath);
         Boolean forBitMatch = UrlUtil.matching(forBidUrlList, servletPath);
-//        if(forBitMatch || !preMatch){
-//            return ACCESS_DENIED;
-//        } else {
-//            return ACCESS_GRANTED;
-//        }
-        return ACCESS_GRANTED;
-        //关于表单权限（前端给表单主键增加唯一性的标识）,后端记录这些标识进行不同权限返回不同的标识列表，拥有这些标识的才展示。
+        if(forBitMatch || !preMatch){
+            return ACCESS_DENIED;
+        } else {
+            return ACCESS_GRANTED;
+        }
     }
 
     @Override

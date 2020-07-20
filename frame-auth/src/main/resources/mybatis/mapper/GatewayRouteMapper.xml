@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.cloud.frame.authclient.entity.GatewayRoute">
         <id column="gr_id" jdbcType="BIGINT" property="grId" />
         <result column="route_id" jdbcType="VARCHAR" property="routeId" />
+        <result column="reource_id" jdbcType="VARCHAR" property="reourceId" />
         <result column="instance_id" jdbcType="VARCHAR" property="instanceId" />
         <result column="predicates" jdbcType="VARCHAR" property="predicates" />
         <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -14,11 +15,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        gr_id,route_id,instance_id,predicates,remark,create_time,modify_time,regexp_url,status
+        gr_id,route_id,reource_id,instance_id,predicates,remark,create_time,modify_time,regexp_url,status
     </sql>
 
     <sql id="Base_Object_List">
-        #{at.grId},#{at.routeId},#{at.instanceId},#{at.predicates},#{at.remark},#{at.createTime},#{at.modifyTime},#{at.regexpUrl},#{at.status}
+        #{at.grId},#{at.routeId},#{at.reourceId},#{at.instanceId},#{at.predicates},#{at.remark},#{at.createTime},#{at.modifyTime},#{at.regexpUrl},#{at.status}
     </sql>
 
     <sql id="Set_Not_Null_List">
@@ -28,6 +29,9 @@
             </if>
             <if test="ut.routeId != null">
                 route_id = #{ut.routeId},
+            </if>
+            <if test="ut.reourceId != null">
+                reource_id = #{ut.reourceId},
             </if>
             <if test="ut.instanceId != null">
                 instance_id = #{ut.instanceId},
@@ -57,6 +61,7 @@
         <set>
             gr_id = #{ut.grId},
             route_id = #{ut.routeId},
+            reource_id = #{ut.reourceId},
             instance_id = #{ut.instanceId},
             predicates = #{ut.predicates},
             remark = #{ut.remark},
@@ -95,6 +100,9 @@
         </if>
         <if test="st.routeId != null">
             AND route_id = #{st.routeId}
+        </if>
+        <if test="st.reourceId != null">
+            AND reource_id = #{st.reourceId}
         </if>
         <if test="st.instanceId != null">
             AND instance_id = #{st.instanceId}
@@ -305,7 +313,7 @@
 
 
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code begin ~~~~~~~~~~~~~~~~~~~~~~-->
-    
+        
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code end ~~~~~~~~~~~~~~~~~~~~~~-->
 
 </mapper>

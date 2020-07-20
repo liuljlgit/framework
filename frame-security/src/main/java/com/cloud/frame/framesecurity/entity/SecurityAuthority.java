@@ -13,16 +13,12 @@ import org.springframework.security.core.GrantedAuthority;
 @ApiModel("自定义的GrantedAuthority")
 public class SecurityAuthority implements GrantedAuthority {
 
-    private static final long serialVersionUID = -8654263543826465933L;
-
-    @ApiModelProperty("主键")
-    private Long id;
-
-    @ApiModelProperty("角色名称")
-    private String roleName;
+    @ApiModelProperty("权限名称")
+    private String authority;
 
     @Override
     public String getAuthority() {
-        return roleName;
+        return authority;
     }
+
 }

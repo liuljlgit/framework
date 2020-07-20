@@ -37,13 +37,15 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/**/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 
-#资源验证
+#资源id
 security:
   oauth2:
     resource:
-      id: resource_1
+      id: resource-server
 #      prefer-token-info: false
 #      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
+
+
 
 oauth2:
   ignore:

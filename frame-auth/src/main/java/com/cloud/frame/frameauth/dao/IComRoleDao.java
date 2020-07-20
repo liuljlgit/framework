@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface IComRoleDao extends IBaseMapper<ComRole>{
 
     //------------------------ custom code begin ------------------------//
-        
+            
     //======================== custom code end ========================//
 
 }

@@ -64,8 +64,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             List<ComRole> comRoles = comRoleService.selectList(comRole);
             for (ComRole role : comRoles) {
                 SecurityAuthority securityAuthority = new SecurityAuthority();
-                securityAuthority.setId(role.getRoleId());
-                securityAuthority.setRoleName(role.getRoleName());
+                securityAuthority.setAuthority("ROLE_" + role.getRoleCode());
                 grantedAuthorities.add(securityAuthority);
             }
         }

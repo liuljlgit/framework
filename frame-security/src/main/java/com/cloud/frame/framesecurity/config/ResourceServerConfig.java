@@ -6,6 +6,7 @@ import com.cloud.frame.framesecurity.handler.AuthExceptionHandler;
 import com.cloud.frame.framesecurity.voter.PermissionAccessDecisionVoter;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,14 +35,14 @@ import java.util.List;
  */
 @Configuration
 @EnableResourceServer
-@EnableConfigurationProperties({IgnoreUrl.class,ServerConfig.class})
+@EnableConfigurationProperties({IgnoreUrl.class})
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    @Value("${security.oauth2.resource.id}")
+    String resourceId;
 
     @Autowired
     IgnoreUrl ignoreUrl;
-
-    @Autowired
-    ServerConfig serverConfig;
 
     @Autowired
     AccessDecisionVoter accessDecisionVoter;
@@ -95,7 +96,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean(AccessDecisionVoter.class)
     public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate,SecurityFeign securityFeign){
-        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign,serverConfig.getName());
+        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign,resourceId);
     }
 
 }
