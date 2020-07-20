@@ -1,71 +1,19 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.1.114(localhost)
-Source Server Version : 50720
-Source Host           : 192.168.1.114:3306
+Source Server         : localhost
+Source Server Version : 50725
+Source Host           : localhost:3306
 Source Database       : framework
 
 Target Server Type    : MYSQL
-Target Server Version : 50720
+Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2019-11-16 15:23:49
+Date: 2020-07-20 23:00:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for com_authority
--- ----------------------------
-DROP TABLE IF EXISTS `com_authority`;
-CREATE TABLE `com_authority` (
-  `auth_id` bigint(20) NOT NULL COMMENT '主键',
-  `auth_name` varchar(50) DEFAULT NULL COMMENT '权限名称',
-  `permit_urls` varchar(1000) DEFAULT NULL COMMENT '允许通过路径，逗号分隔',
-  `forbid_urls` varchar(1000) DEFAULT NULL COMMENT '禁止通过路径，逗号分隔',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
-  PRIMARY KEY (`auth_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='6、权限表';
-
--- ----------------------------
--- Records of com_authority
--- ----------------------------
-INSERT INTO `com_authority` VALUES ('1000001', '超级管理员', '/holiday/**,/auth/**', '/**', '2019-10-17 11:37:30', '1');
-
--- ----------------------------
--- Table structure for com_authority_role
--- ----------------------------
-DROP TABLE IF EXISTS `com_authority_role`;
-CREATE TABLE `com_authority_role` (
-  `ar_id` bigint(20) NOT NULL COMMENT '主键',
-  `auth_id` bigint(20) DEFAULT NULL COMMENT '权限主键',
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色主键',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`ar_id`),
-  UNIQUE KEY `IDX_AUTH_ROLE` (`auth_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='7、权限角色关联表';
-
--- ----------------------------
--- Records of com_authority_role
--- ----------------------------
-INSERT INTO `com_authority_role` VALUES ('1000001', '1000001', '1000001', '2019-11-16 14:25:21');
-INSERT INTO `com_authority_role` VALUES ('1000002', '1000001', '1000002', '2019-11-16 14:26:08');
-INSERT INTO `com_authority_role` VALUES ('1000003', '1000001', '1000003', '2019-11-16 14:27:30');
-INSERT INTO `com_authority_role` VALUES ('1000004', '1000001', '1000004', '2019-11-16 14:35:50');
-INSERT INTO `com_authority_role` VALUES ('1000005', '1000001', '1000005', '2019-11-16 14:36:02');
-INSERT INTO `com_authority_role` VALUES ('1000006', '1000001', '1000006', '2019-11-16 14:36:13');
-INSERT INTO `com_authority_role` VALUES ('1000007', '1000001', '1000007', '2019-11-16 14:36:25');
-INSERT INTO `com_authority_role` VALUES ('1000008', '1000001', '1000008', '2019-11-16 14:36:40');
-INSERT INTO `com_authority_role` VALUES ('1000009', '1000001', '1000009', '2019-11-16 14:36:52');
-INSERT INTO `com_authority_role` VALUES ('1000010', '1000001', '1000010', '2019-11-16 14:37:06');
-INSERT INTO `com_authority_role` VALUES ('1000011', '1000001', '1000011', '2019-11-16 14:37:21');
-INSERT INTO `com_authority_role` VALUES ('1000012', '1000001', '1000012', '2019-11-16 14:37:33');
-INSERT INTO `com_authority_role` VALUES ('1000013', '1000001', '1000013', '2019-11-16 14:37:46');
-INSERT INTO `com_authority_role` VALUES ('1000014', '1000001', '1000014', '2019-11-16 14:38:00');
-INSERT INTO `com_authority_role` VALUES ('1000015', '1000001', '1000015', '2019-11-16 14:38:12');
-INSERT INTO `com_authority_role` VALUES ('1000016', '1000001', '1000016', '2019-11-16 14:38:23');
 
 -- ----------------------------
 -- Table structure for com_form
@@ -168,7 +116,10 @@ INSERT INTO `com_menu_role` VALUES ('1000016', '1000001', '1000016', '2019-11-16
 DROP TABLE IF EXISTS `com_role`;
 CREATE TABLE `com_role` (
   `role_id` bigint(20) NOT NULL COMMENT '主键',
+  `role_code` varchar(50) DEFAULT NULL,
   `role_name` varchar(50) DEFAULT NULL COMMENT '角色名',
+  `permit_urls` varchar(1000) DEFAULT NULL,
+  `forbid_urls` varchar(1000) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
   PRIMARY KEY (`role_id`),
@@ -178,7 +129,7 @@ CREATE TABLE `com_role` (
 -- ----------------------------
 -- Records of com_role
 -- ----------------------------
-INSERT INTO `com_role` VALUES ('1000001', '超级管理员', '2019-10-17 11:37:30', '1');
+INSERT INTO `com_role` VALUES ('1000001', 'ADMIN', '超级管理员', '/app/resource1/holiday/**,/app/auth/**', '', '2019-10-17 11:37:30', '1');
 
 -- ----------------------------
 -- Table structure for com_user
@@ -247,6 +198,7 @@ DROP TABLE IF EXISTS `gateway_route`;
 CREATE TABLE `gateway_route` (
   `gr_id` bigint(20) NOT NULL,
   `route_id` varchar(50) NOT NULL COMMENT '路由ID',
+  `reource_id` varchar(50) DEFAULT NULL COMMENT '资源服务器配置的资源id',
   `instance_id` varchar(50) NOT NULL COMMENT 'eureka中注册的id',
   `predicates` varchar(200) NOT NULL COMMENT '路由规则，多个的时候用逗号划分',
   `remark` varchar(50) DEFAULT NULL COMMENT '备注',
@@ -260,9 +212,9 @@ CREATE TABLE `gateway_route` (
 -- ----------------------------
 -- Records of gateway_route
 -- ----------------------------
-INSERT INTO `gateway_route` VALUES ('1', 'frame-auth-server', 'lb://frame-auth-server', '/app/auth/**', '鉴权服务', '2019-10-17 11:35:21.000000', null, '/app/auth', '1');
-INSERT INTO `gateway_route` VALUES ('2', 'frame-resource-server', 'lb://frame-resource-server', '/app/resource/**', '资源服务', '2019-10-17 11:37:30.000000', null, '/app/resource', '1');
-INSERT INTO `gateway_route` VALUES ('3', 'frame-gateway-server', 'lb://frame-gateway-server', '/app/gateway/**', '网关服务', '2019-11-07 11:24:34.000000', null, '/app/gateway', '1');
+INSERT INTO `gateway_route` VALUES ('1', 'frame-auth-server', 'auth-server', 'lb://frame-auth-server', '/app/auth/**', '鉴权服务', '2019-10-17 11:35:21.000000', null, '/app/auth', '1');
+INSERT INTO `gateway_route` VALUES ('2', 'frame-resource-server', 'resource-server', 'lb://frame-resource-server', '/app/resource1/**', '资源服务', '2019-10-17 11:37:30.000000', null, '/app/resource1', '1');
+INSERT INTO `gateway_route` VALUES ('3', 'frame-gateway-server', null, 'lb://frame-gateway-server', '/app/gateway/**', '网关服务', '2019-11-07 11:24:34.000000', null, '/app/gateway', '1');
 
 -- ----------------------------
 -- Table structure for holiday
