@@ -26,25 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
 @Validated
 @Api(tags = "1、用户表")
-public class ComUserCtrl implements ComUserFeign , SecurityFeign {
+public class ComUserCtrl implements ComUserFeign {
 
     @Autowired
     private IComUserService comUserService;
-
-    @Autowired
-    private IComRoleService comRoleService;
-
-    @Autowired
-    private IGatewayRouteService gatewayRouteService;
-
-    @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public CommonResp<ComUser> selectById(@RequestParam("userId") @NotNull Long userId) {
@@ -73,25 +65,4 @@ public class ComUserCtrl implements ComUserFeign , SecurityFeign {
         return RespEntity.ok();
     }
 
-    @Override
-    public Object getUserDetailById(@NotNull @RequestParam(value="userId") Long userId) {
-        return comUserService.selectById(userId);
-    }
-
-    @Override
-    public Map<Object, Object> getResourceGatewayPrefixMap() {
-        Map<Object, Object> resourceGatewayPrefixMap = gatewayRouteService.selectList(new GatewayRoute()).stream()
-                .filter(e-> !StringUtils.isEmpty(e.getReourceId()))
-                .collect(Collectors.toMap(e->e.getReourceId(),e->e.getRegexpUrl()));
-        redisTemplate.opsForHash().putAll(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP,resourceGatewayPrefixMap);
-        return resourceGatewayPrefixMap;
-    }
-
-    @Override
-    public Map<Object, Object> getRolekeyDetailsMap() {
-        Map<Object, Object> rolekeyDetailsMap = comRoleService.selectList(new ComRole()).stream()
-                .collect(Collectors.toMap(e -> "ROLE_" + e.getRoleCode(), e->JSONObject.toJSONString(e)));
-        redisTemplate.opsForHash().putAll(RedisKey.ROLEKEY_DETAILS_MAP,rolekeyDetailsMap);
-        return rolekeyDetailsMap;
-    }
 }

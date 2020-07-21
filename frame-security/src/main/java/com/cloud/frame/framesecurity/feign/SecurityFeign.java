@@ -16,17 +16,16 @@ import java.util.Map;
 @AuthorizedUserFeignClient(name = "${frame.auth.server:frame-auth-server}")
 public interface SecurityFeign {
 
-    @GetMapping(value = "/comuser/detail")
-    @ApiOperation(value = "根据主键查询" , notes = "author: llj")
-    @ApiImplicitParam(name="userId", value="主键",required = true)
-    Object getUserDetailById(@RequestParam("userId") @NotNull Long userId);
-
-    @GetMapping(value = "/comuser/resourcegatewayprefix")
+    @GetMapping(value = "/security/resourcegatewayprefix")
     @ApiOperation(value = "获取资源ID对应的前缀" , notes = "author: llj")
     Map<Object, Object> getResourceGatewayPrefixMap();
 
-    @GetMapping(value = "/comuser/rolekeydetails")
+    @GetMapping(value = "/security/rolekeydetails")
     @ApiOperation(value = "获取角色对应的URL权限" , notes = "author: llj")
     Map<Object, Object> getRolekeyDetailsMap();
 
+    @GetMapping(value = "/security/loginuser")
+    @ApiOperation(value = "根据账号查询登录用户信息" , notes = "author: llj")
+    @ApiImplicitParam(name="principal", value="账号",required = true)
+    Object getLoginUserByPrincipal(@RequestParam("principal") @NotNull String principal);
 }

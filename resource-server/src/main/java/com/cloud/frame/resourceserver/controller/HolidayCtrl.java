@@ -1,5 +1,7 @@
 package com.cloud.frame.resourceserver.controller;
 
+import com.cloud.frame.framesecurity.entity.LoginUser;
+import com.cloud.frame.framesecurity.util.SecurityUtil;
 import com.cloud.frame.resourceclient.entity.Holiday;
 import com.cloud.frame.resourceclient.feign.HolidayFeign;
 import com.cloud.frame.resourceserver.service.IHolidayService;
@@ -34,6 +36,7 @@ public class HolidayCtrl implements HolidayFeign {
 
     @Override
     public CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday, HttpServletRequest request){
+        LoginUser loginUser = SecurityUtil.getLoginUser();
         return RespEntity.ok(holidayService.selectList(holiday));
     }
 

@@ -10,4 +10,6 @@ public interface RedisKey {
 
     String ROLEKEY_DETAILS_MAP = "ROLEKEY_DETAILS_MAP";
 
+    String PRINCIPAL_LOGINUSER_MAP = "PRINCIPAL_LOGINUSER_MAP";
+
 }
