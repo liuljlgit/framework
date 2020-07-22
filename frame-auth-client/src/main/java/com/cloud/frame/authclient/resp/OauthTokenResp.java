@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version v 0.1 2019/11/6 14:32
  */
 @Data
-public class LoginResp implements Serializable {
+public class OauthTokenResp implements Serializable {
 
     private String access_token;
 

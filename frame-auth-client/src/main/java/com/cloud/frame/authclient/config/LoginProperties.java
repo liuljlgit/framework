@@ -1,4 +1,4 @@
-package com.cloud.frame.framesecurity.config;
+package com.cloud.frame.authclient.config;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

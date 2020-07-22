@@ -1,15 +1,14 @@
 package com.cloud.frame.frameauth.controller;
 
+import com.cloud.frame.authclient.config.LoginProperties;
 import com.cloud.frame.authclient.entity.ComUser;
 import com.cloud.frame.authclient.feign.OauthEnpointFeign;
 import com.cloud.frame.authclient.feign.OauthFeign;
-import com.cloud.frame.authclient.req.LoginReq;
+import com.cloud.frame.authclient.req.OauthTokenReq;
 import com.cloud.frame.authclient.req.RegisterReq;
-import com.cloud.frame.authclient.req.UserReq;
-import com.cloud.frame.authclient.resp.LoginResp;
-import com.cloud.frame.authclient.resp.UserInfoResp;
+import com.cloud.frame.authclient.req.LoginReq;
+import com.cloud.frame.authclient.resp.OauthTokenResp;
 import com.cloud.frame.frameauth.service.IComUserService;
-import com.cloud.frame.framesecurity.config.LoginProperties;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
 import io.swagger.annotations.Api;
@@ -59,17 +58,17 @@ public class OauthCtrl implements OauthFeign {
     }
 
     @Override
-    public LoginResp login(@RequestBody UserReq userReq) {
-        LoginReq loginReq = LoginReq.builder()
+    public OauthTokenResp login(@RequestBody LoginReq loginReq) {
+        OauthTokenReq oauthTokenReq = OauthTokenReq.builder()
                 .applicationName(loginProperties.getApplicationName())
                 .client_id(loginProperties.getClientId())
                 .client_secret(loginProperties.getClientSecret())
                 .grant_type(loginProperties.getGrantType())
-                .password(userReq.getPassword())
-                .username(userReq.getUsername())
+                .password(loginReq.getPassword())
+                .username(loginReq.getUsername())
                 .scope(loginProperties.getScope())
                 .build();
-        return oauthEnpointFeign.login(loginReq);
+        return oauthEnpointFeign.login(oauthTokenReq);
     }
 
     @Override
@@ -94,15 +93,15 @@ public class OauthCtrl implements OauthFeign {
     }
 
     @Override
-    public LoginResp refreshtoken(@ApiParam("需要拿refresh_token") @RequestParam("token") String token) {
-        LoginReq loginReq = LoginReq.builder()
+    public OauthTokenResp refreshtoken(@ApiParam("需要拿refresh_token") @RequestParam("token") String token) {
+        OauthTokenReq oauthTokenReq = OauthTokenReq.builder()
                 .applicationName(loginProperties.getApplicationName())
                 .client_id(loginProperties.getClientId())
                 .client_secret(loginProperties.getClientSecret())
                 .grant_type("refresh_token")
                 .refresh_token(token)
                 .build();
-        return oauthEnpointFeign.login(loginReq);
+        return oauthEnpointFeign.login(oauthTokenReq);
     }
 
 }
