@@ -36,8 +36,4 @@ public interface OauthFeign {
     @ApiOperation(value = "刷新token" , notes = "author: llj")
     LoginResp refreshtoken(@ApiParam("需要拿refresh_token") @RequestParam("token") String token);
 
-    @GetMapping("/oauth/userinfo")
-    @ApiOperation(value = "根据用户的token返回用户信息，菜单，权限等信息")
-    UserInfoResp getLoginUserInfo();
-
 }

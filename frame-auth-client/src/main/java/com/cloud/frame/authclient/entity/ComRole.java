@@ -1,20 +1,18 @@
 package com.cloud.frame.authclient.entity;
 
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
-import com.cloud.ftl.ftlbasic.constant.PatternConst;
-import com.cloud.ftl.ftlbasic.enums.Opt;
+import java.util.Date;
+import java.util.List;
+import java.math.BigDecimal;
 import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cloud.ftl.ftlbasic.enums.Opt;
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import com.cloud.ftl.ftlbasic.constant.PatternConst;
 
 @Data
 @Builder
@@ -28,17 +26,20 @@ public class ComRole extends BaseQuery {
     @PrimaryKey
     private Long roleId;
 
-	@ApiModelProperty("角色编码")
+	@ApiModelProperty("")
     private String roleCode;
 
 	@ApiModelProperty("角色名")
     private String roleName;
 
-	@ApiModelProperty("允许通过的url")
+	@ApiModelProperty("")
     private String permitUrls;
 
-	@ApiModelProperty("拒绝通过的url")
+	@ApiModelProperty("")
     private String forbidUrls;
+
+	@ApiModelProperty("角色id")
+    private String menuIds;
 
 	@ApiModelProperty("创建时间")
     @JsonFormat(pattern = PatternConst.NORM_DATETIME,timezone = PatternConst.TIMEZONE)
@@ -66,6 +67,10 @@ public class ComRole extends BaseQuery {
     @JsonIgnore
     @ApiModelProperty(hidden = true)
     public static final transient String FORBID_URLS = "forbid_urls";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String MENU_IDS = "menu_ids";
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
@@ -133,6 +138,18 @@ public class ComRole extends BaseQuery {
             addConditGroup(FORBID_URLS,opt,values[0],values[1]);
         } else {
             throw new RuntimeException("‘"+ FORBID_URLS + "’ 的SQL入参个数不正确 ");
+        }
+    }
+
+    public void andMenuIds(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(MENU_IDS,opt);
+        } else if(values.length == 1){
+            addConditGroup(MENU_IDS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(MENU_IDS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ MENU_IDS + "’ 的SQL入参个数不正确 ");
         }
     }
 

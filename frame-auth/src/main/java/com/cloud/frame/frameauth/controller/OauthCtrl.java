@@ -105,9 +105,4 @@ public class OauthCtrl implements OauthFeign {
         return oauthEnpointFeign.login(loginReq);
     }
 
-    @Override
-    public UserInfoResp getLoginUserInfo() {
-        return null;
-    }
-
 }

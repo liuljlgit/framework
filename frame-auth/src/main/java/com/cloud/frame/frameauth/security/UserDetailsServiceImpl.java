@@ -2,23 +2,26 @@ package com.cloud.frame.frameauth.security;
 
 import com.cloud.frame.authclient.entity.ComRole;
 import com.cloud.frame.authclient.entity.ComUser;
-import com.cloud.frame.authclient.entity.ComUserRole;
+import com.cloud.frame.frameauth.enums.BooleanEnum;
 import com.cloud.frame.frameauth.service.IComRoleService;
-import com.cloud.frame.frameauth.service.IComUserRoleService;
 import com.cloud.frame.frameauth.service.IComUserService;
 import com.cloud.frame.framesecurity.entity.SecurityAuthority;
 import com.cloud.frame.framesecurity.entity.SecurityUser;
 import com.cloud.ftl.ftlbasic.enums.Opt;
 import com.cloud.ftl.ftlbasic.exception.BusiException;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -37,8 +40,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     IComUserService comUserService;
     @Autowired
     IComRoleService comRoleService;
-    @Autowired
-    IComUserRoleService comUserRoleService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -48,16 +49,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         ComUser dbUser = comUserService.selectOne(checkUser);
         if(Objects.isNull(dbUser)){
-            throw new BusiException("用户不存在");
+            throw new UsernameNotFoundException("用户不存在");
         }
         dbUser.setPassword("{bcrypt}" + dbUser.getPassword());
         //获取权限列表
         Set<SecurityAuthority> grantedAuthorities = Sets.newHashSet();
-        ComUserRole checkUserRole = new ComUserRole();
-        checkUserRole.setUserId(dbUser.getUserId());
-        List<Long> roleIds = comUserRoleService.selectList(checkUserRole).stream()
-                .map(ComUserRole::getRoleId)
-                .collect(Collectors.toList());
+        List<Long> roleIds = Lists.newArrayList();
+        if(StringUtils.isNotEmpty(dbUser.getRoleIds())){
+            roleIds = Arrays.stream(dbUser.getRoleIds().split(","))
+                    .map(Long::valueOf).collect(Collectors.toList());
+        }
         if(CollectionUtils.isNotEmpty(roleIds)){
             ComRole comRole = new ComRole();
             comRole.andRoleId(Opt.IN,roleIds);
@@ -68,13 +69,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 grantedAuthorities.add(securityAuthority);
             }
         }
-
         //enabled 可用性 :true:可用 false:不可用
         //accountNonExpired 过期性 :true:没过期 false:过期
         //credentialsNonExpired 有效性 :true:凭证有效 false:凭证无效
         //accountNonLocked 锁定性 :true:未锁定 false:已锁定
+        Boolean enabled = BooleanEnum.codeBoolMap.get(dbUser.getEnabled());
+        Boolean accountNonExpired = BooleanEnum.codeBoolMap.get(dbUser.getAccountNonExpired());
+        Boolean credentialsNonExpired = BooleanEnum.codeBoolMap.get(dbUser.getCredentialsNonExpired());
+        Boolean accountNonLocked = BooleanEnum.codeBoolMap.get(dbUser.getAccountNonLocked());
         SecurityUser securityUser = new SecurityUser(dbUser.getUserName(),dbUser.getPassword(),
-                true,true,true,true,grantedAuthorities);
+                enabled,accountNonExpired,credentialsNonExpired,accountNonLocked,grantedAuthorities);
         securityUser.setId(dbUser.getUserId());
         return securityUser;
     }

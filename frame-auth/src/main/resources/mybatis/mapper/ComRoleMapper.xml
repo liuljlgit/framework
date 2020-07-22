@@ -7,16 +7,17 @@
         <result column="role_name" jdbcType="VARCHAR" property="roleName" />
         <result column="permit_urls" jdbcType="VARCHAR" property="permitUrls" />
         <result column="forbid_urls" jdbcType="VARCHAR" property="forbidUrls" />
+        <result column="menu_ids" jdbcType="VARCHAR" property="menuIds" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="is_enable" jdbcType="TINYINT" property="isEnable" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        role_id,role_code,role_name,permit_urls,forbid_urls,create_time,is_enable
+        role_id,role_code,role_name,permit_urls,forbid_urls,menu_ids,create_time,is_enable
     </sql>
 
     <sql id="Base_Object_List">
-        #{at.roleId},#{at.roleCode},#{at.roleName},#{at.permitUrls},#{at.forbidUrls},#{at.createTime},#{at.isEnable}
+        #{at.roleId},#{at.roleCode},#{at.roleName},#{at.permitUrls},#{at.forbidUrls},#{at.menuIds},#{at.createTime},#{at.isEnable}
     </sql>
 
     <sql id="Set_Not_Null_List">
@@ -36,6 +37,9 @@
             <if test="ut.forbidUrls != null">
                 forbid_urls = #{ut.forbidUrls},
             </if>
+            <if test="ut.menuIds != null">
+                menu_ids = #{ut.menuIds},
+            </if>
             <if test="ut.createTime != null">
                 create_time = #{ut.createTime},
             </if>
@@ -52,6 +56,7 @@
             role_name = #{ut.roleName},
             permit_urls = #{ut.permitUrls},
             forbid_urls = #{ut.forbidUrls},
+            menu_ids = #{ut.menuIds},
             create_time = #{ut.createTime},
             is_enable = #{ut.isEnable}
         </set>
@@ -94,6 +99,9 @@
         </if>
         <if test="st.forbidUrls != null">
             AND forbid_urls = #{st.forbidUrls}
+        </if>
+        <if test="st.menuIds != null">
+            AND menu_ids = #{st.menuIds}
         </if>
         <if test="st.createTime != null">
             AND create_time = #{st.createTime}
@@ -289,7 +297,7 @@
 
 
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code begin ~~~~~~~~~~~~~~~~~~~~~~-->
-            
+                
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code end ~~~~~~~~~~~~~~~~~~~~~~-->
 
 </mapper>

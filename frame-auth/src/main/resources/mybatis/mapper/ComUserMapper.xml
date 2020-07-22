@@ -6,16 +6,21 @@
         <result column="account" jdbcType="VARCHAR" property="account" />
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
+        <result column="enabled" jdbcType="TINYINT" property="enabled" />
+        <result column="account_non_expired" jdbcType="TINYINT" property="accountNonExpired" />
+        <result column="credentials_non_expired" jdbcType="TINYINT" property="credentialsNonExpired" />
+        <result column="account_non_locked" jdbcType="TINYINT" property="accountNonLocked" />
         <result column="status" jdbcType="TINYINT" property="status" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        user_id,account,user_name,password,status,create_time
+        user_id,account,user_name,password,role_ids,enabled,account_non_expired,credentials_non_expired,account_non_locked,status,create_time
     </sql>
 
     <sql id="Base_Object_List">
-        #{at.userId},#{at.account},#{at.userName},#{at.password},#{at.status},#{at.createTime}
+        #{at.userId},#{at.account},#{at.userName},#{at.password},#{at.roleIds},#{at.enabled},#{at.accountNonExpired},#{at.credentialsNonExpired},#{at.accountNonLocked},#{at.status},#{at.createTime}
     </sql>
 
     <sql id="Set_Not_Null_List">
@@ -32,6 +37,21 @@
             <if test="ut.password != null">
                 password = #{ut.password},
             </if>
+            <if test="ut.roleIds != null">
+                role_ids = #{ut.roleIds},
+            </if>
+            <if test="ut.enabled != null">
+                enabled = #{ut.enabled},
+            </if>
+            <if test="ut.accountNonExpired != null">
+                account_non_expired = #{ut.accountNonExpired},
+            </if>
+            <if test="ut.credentialsNonExpired != null">
+                credentials_non_expired = #{ut.credentialsNonExpired},
+            </if>
+            <if test="ut.accountNonLocked != null">
+                account_non_locked = #{ut.accountNonLocked},
+            </if>
             <if test="ut.status != null">
                 status = #{ut.status},
             </if>
@@ -47,6 +67,11 @@
             account = #{ut.account},
             user_name = #{ut.userName},
             password = #{ut.password},
+            role_ids = #{ut.roleIds},
+            enabled = #{ut.enabled},
+            account_non_expired = #{ut.accountNonExpired},
+            credentials_non_expired = #{ut.credentialsNonExpired},
+            account_non_locked = #{ut.accountNonLocked},
             status = #{ut.status},
             create_time = #{ut.createTime}
         </set>
@@ -86,6 +111,21 @@
         </if>
         <if test="st.password != null">
             AND password = #{st.password}
+        </if>
+        <if test="st.roleIds != null">
+            AND role_ids = #{st.roleIds}
+        </if>
+        <if test="st.enabled != null">
+            AND enabled = #{st.enabled}
+        </if>
+        <if test="st.accountNonExpired != null">
+            AND account_non_expired = #{st.accountNonExpired}
+        </if>
+        <if test="st.credentialsNonExpired != null">
+            AND credentials_non_expired = #{st.credentialsNonExpired}
+        </if>
+        <if test="st.accountNonLocked != null">
+            AND account_non_locked = #{st.accountNonLocked}
         </if>
         <if test="st.status != null">
             AND status = #{st.status}
@@ -281,7 +321,7 @@
 
 
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code begin ~~~~~~~~~~~~~~~~~~~~~~-->
-    
+            
     <!--~~~~~~~~~~~~~~~~~~~~~~ custom code end ~~~~~~~~~~~~~~~~~~~~~~-->
 
 </mapper>

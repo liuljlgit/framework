@@ -1,20 +1,18 @@
 package com.cloud.frame.authclient.entity;
 
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
-import com.cloud.ftl.ftlbasic.enums.Opt;
-import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.List;
+import java.math.BigDecimal;
+import com.cloud.ftl.ftlbasic.webEntity.BaseQuery;
+import com.cloud.ftl.ftlbasic.enums.Opt;
+import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import com.cloud.ftl.ftlbasic.constant.PatternConst;
 
 @Data
 @Builder
@@ -37,11 +35,26 @@ public class ComUser extends BaseQuery {
 	@ApiModelProperty("密码（bcrypt加密）")
     private String password;
 
+	@ApiModelProperty("角色id,逗号分隔")
+    private String roleIds;
+
+	@ApiModelProperty("可用性 :true:1 false:0")
+    private Byte enabled;
+
+	@ApiModelProperty("过期性 :true:1 false:0")
+    private Byte accountNonExpired;
+
+	@ApiModelProperty("有效性 :true:1 false:0")
+    private Byte credentialsNonExpired;
+
+	@ApiModelProperty("锁定性 :true:1 false:0")
+    private Byte accountNonLocked;
+
 	@ApiModelProperty("状态：正常/禁用")
     private Byte status;
 
 	@ApiModelProperty("创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = PatternConst.NORM_DATETIME,timezone = PatternConst.TIMEZONE)
     private Date createTime;
 
     @JsonIgnore
@@ -62,6 +75,26 @@ public class ComUser extends BaseQuery {
 
     @JsonIgnore
     @ApiModelProperty(hidden = true)
+    public static final transient String ROLE_IDS = "role_ids";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String ENABLED = "enabled";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String ACCOUNT_NON_EXPIRED = "account_non_expired";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String CREDENTIALS_NON_EXPIRED = "credentials_non_expired";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    public static final transient String ACCOUNT_NON_LOCKED = "account_non_locked";
+
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     public static final transient String STATUS = "status";
 
     @JsonIgnore
@@ -69,100 +102,136 @@ public class ComUser extends BaseQuery {
     public static final transient String CREATE_TIME = "create_time";
 
 
-    public void andUserId(Opt opt) {
-        addConditGroup(USER_ID,opt);
+    public void andUserId(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(USER_ID,opt);
+        } else if(values.length == 1){
+            addConditGroup(USER_ID,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(USER_ID,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ USER_ID + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserId(Opt opt,Long userId) {
-        addConditGroup(USER_ID,opt,userId);
+    public void andAccount(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ACCOUNT,opt);
+        } else if(values.length == 1){
+            addConditGroup(ACCOUNT,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ACCOUNT,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ACCOUNT + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserId(Opt opt,List<Long> list) {
-        addConditGroup(USER_ID,opt,list);
+    public void andUserName(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(USER_NAME,opt);
+        } else if(values.length == 1){
+            addConditGroup(USER_NAME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(USER_NAME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ USER_NAME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserId(Opt opt,Long firstParam,Long secondParam) {
-        addConditGroup(USER_ID,opt,firstParam,secondParam);
+    public void andPassword(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(PASSWORD,opt);
+        } else if(values.length == 1){
+            addConditGroup(PASSWORD,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(PASSWORD,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ PASSWORD + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andAccount(Opt opt) {
-        addConditGroup(ACCOUNT,opt);
+    public void andRoleIds(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ROLE_IDS,opt);
+        } else if(values.length == 1){
+            addConditGroup(ROLE_IDS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ROLE_IDS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ROLE_IDS + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andAccount(Opt opt,String account) {
-        addConditGroup(ACCOUNT,opt,account);
+    public void andEnabled(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ENABLED,opt);
+        } else if(values.length == 1){
+            addConditGroup(ENABLED,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ENABLED,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ENABLED + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andAccount(Opt opt,List<String> list) {
-        addConditGroup(ACCOUNT,opt,list);
+    public void andAccountNonExpired(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ACCOUNT_NON_EXPIRED,opt);
+        } else if(values.length == 1){
+            addConditGroup(ACCOUNT_NON_EXPIRED,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ACCOUNT_NON_EXPIRED,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ACCOUNT_NON_EXPIRED + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andAccount(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(ACCOUNT,opt,firstParam,secondParam);
+    public void andCredentialsNonExpired(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(CREDENTIALS_NON_EXPIRED,opt);
+        } else if(values.length == 1){
+            addConditGroup(CREDENTIALS_NON_EXPIRED,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(CREDENTIALS_NON_EXPIRED,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ CREDENTIALS_NON_EXPIRED + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserName(Opt opt) {
-        addConditGroup(USER_NAME,opt);
+    public void andAccountNonLocked(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(ACCOUNT_NON_LOCKED,opt);
+        } else if(values.length == 1){
+            addConditGroup(ACCOUNT_NON_LOCKED,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(ACCOUNT_NON_LOCKED,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ ACCOUNT_NON_LOCKED + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserName(Opt opt,String userName) {
-        addConditGroup(USER_NAME,opt,userName);
+    public void andStatus(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(STATUS,opt);
+        } else if(values.length == 1){
+            addConditGroup(STATUS,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(STATUS,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ STATUS + "’ 的SQL入参个数不正确 ");
+        }
     }
 
-    public void andUserName(Opt opt,List<String> list) {
-        addConditGroup(USER_NAME,opt,list);
-    }
-
-    public void andUserName(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(USER_NAME,opt,firstParam,secondParam);
-    }
-
-    public void andPassword(Opt opt) {
-        addConditGroup(PASSWORD,opt);
-    }
-
-    public void andPassword(Opt opt,String password) {
-        addConditGroup(PASSWORD,opt,password);
-    }
-
-    public void andPassword(Opt opt,List<String> list) {
-        addConditGroup(PASSWORD,opt,list);
-    }
-
-    public void andPassword(Opt opt,String firstParam,String secondParam) {
-        addConditGroup(PASSWORD,opt,firstParam,secondParam);
-    }
-
-    public void andStatus(Opt opt) {
-        addConditGroup(STATUS,opt);
-    }
-
-    public void andStatus(Opt opt,Byte status) {
-        addConditGroup(STATUS,opt,status);
-    }
-
-    public void andStatus(Opt opt,List<Byte> list) {
-        addConditGroup(STATUS,opt,list);
-    }
-
-    public void andStatus(Opt opt,Byte firstParam,Byte secondParam) {
-        addConditGroup(STATUS,opt,firstParam,secondParam);
-    }
-
-    public void andCreateTime(Opt opt) {
-        addConditGroup(CREATE_TIME,opt);
-    }
-
-    public void andCreateTime(Opt opt,Date createTime) {
-        addConditGroup(CREATE_TIME,opt,createTime);
-    }
-
-    public void andCreateTime(Opt opt,List<Date> list) {
-        addConditGroup(CREATE_TIME,opt,list);
-    }
-
-    public void andCreateTime(Opt opt,Date firstParam,Date secondParam) {
-        addConditGroup(CREATE_TIME,opt,firstParam,secondParam);
+    public void andCreateTime(Opt opt,Object... values) {
+        if(values.length == 0){
+            addConditGroup(CREATE_TIME,opt);
+        } else if(values.length == 1){
+            addConditGroup(CREATE_TIME,opt,values[0]);
+        } else if(values.length == 2){
+            addConditGroup(CREATE_TIME,opt,values[0],values[1]);
+        } else {
+            throw new RuntimeException("‘"+ CREATE_TIME + "’ 的SQL入参个数不正确 ");
+        }
     }
 
 }

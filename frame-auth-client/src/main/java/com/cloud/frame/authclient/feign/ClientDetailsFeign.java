@@ -18,6 +18,6 @@ public interface ClientDetailsFeign {
     void saveClientDetails(@RequestBody ClientDetailsReq clientDetailsReq);
 
     @GetMapping("/clientdetails/delete")
-    @ApiOperation(value = "增加客户端信息" , notes = "author: llj")
+    @ApiOperation(value = "删除客户端信息" , notes = "author: llj")
     void deleteClientDetails(@RequestParam("clientId") String clientId);
 }

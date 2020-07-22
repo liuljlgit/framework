@@ -14,7 +14,7 @@ import com.cloud.frame.authclient.entity.ComUser;
 public interface IComUserDao extends IBaseMapper<ComUser>{
 
     //------------------------ custom code begin ------------------------//
-    
+            
     //======================== custom code end ========================//
 
 }
