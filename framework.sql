@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2020-07-20 23:00:08
+Date: 2020-07-23 00:06:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,39 +78,6 @@ INSERT INTO `com_menu` VALUES ('1000015', '调频市场数据', '1000005', '/dat
 INSERT INTO `com_menu` VALUES ('1000016', '调频结算数据', '1000005', '/dataManage/settlementMarket', '', '5', '2019-11-04 11:20:02', '1');
 
 -- ----------------------------
--- Table structure for com_menu_role
--- ----------------------------
-DROP TABLE IF EXISTS `com_menu_role`;
-CREATE TABLE `com_menu_role` (
-  `mr_id` bigint(20) NOT NULL COMMENT '主键',
-  `role_id` bigint(20) DEFAULT NULL COMMENT '角色主键',
-  `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单主键',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`mr_id`),
-  UNIQUE KEY `IDX_MENU_ROLE` (`role_id`,`menu_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='5、角色菜单关联表';
-
--- ----------------------------
--- Records of com_menu_role
--- ----------------------------
-INSERT INTO `com_menu_role` VALUES ('1000001', '1000001', '1000001', '2019-11-16 14:25:21');
-INSERT INTO `com_menu_role` VALUES ('1000002', '1000001', '1000002', '2019-11-16 14:26:08');
-INSERT INTO `com_menu_role` VALUES ('1000003', '1000001', '1000003', '2019-11-16 14:27:30');
-INSERT INTO `com_menu_role` VALUES ('1000004', '1000001', '1000004', '2019-11-16 14:35:50');
-INSERT INTO `com_menu_role` VALUES ('1000005', '1000001', '1000005', '2019-11-16 14:36:02');
-INSERT INTO `com_menu_role` VALUES ('1000006', '1000001', '1000006', '2019-11-16 14:36:13');
-INSERT INTO `com_menu_role` VALUES ('1000007', '1000001', '1000007', '2019-11-16 14:36:25');
-INSERT INTO `com_menu_role` VALUES ('1000008', '1000001', '1000008', '2019-11-16 14:36:40');
-INSERT INTO `com_menu_role` VALUES ('1000009', '1000001', '1000009', '2019-11-16 14:36:52');
-INSERT INTO `com_menu_role` VALUES ('1000010', '1000001', '1000010', '2019-11-16 14:37:06');
-INSERT INTO `com_menu_role` VALUES ('1000011', '1000001', '1000011', '2019-11-16 14:37:21');
-INSERT INTO `com_menu_role` VALUES ('1000012', '1000001', '1000012', '2019-11-16 14:37:33');
-INSERT INTO `com_menu_role` VALUES ('1000013', '1000001', '1000013', '2019-11-16 14:37:46');
-INSERT INTO `com_menu_role` VALUES ('1000014', '1000001', '1000014', '2019-11-16 14:38:00');
-INSERT INTO `com_menu_role` VALUES ('1000015', '1000001', '1000015', '2019-11-16 14:38:12');
-INSERT INTO `com_menu_role` VALUES ('1000016', '1000001', '1000016', '2019-11-16 14:38:23');
-
--- ----------------------------
 -- Table structure for com_role
 -- ----------------------------
 DROP TABLE IF EXISTS `com_role`;
@@ -120,6 +87,7 @@ CREATE TABLE `com_role` (
   `role_name` varchar(50) DEFAULT NULL COMMENT '角色名',
   `permit_urls` varchar(1000) DEFAULT NULL,
   `forbid_urls` varchar(1000) DEFAULT NULL,
+  `menu_ids` varchar(1000) DEFAULT NULL COMMENT '角色id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `is_enable` tinyint(3) DEFAULT '1' COMMENT '状态：正常/已删除',
   PRIMARY KEY (`role_id`),
@@ -129,7 +97,8 @@ CREATE TABLE `com_role` (
 -- ----------------------------
 -- Records of com_role
 -- ----------------------------
-INSERT INTO `com_role` VALUES ('1000001', 'ADMIN', '超级管理员', '/app/resource1/holiday/**,/app/auth/**', '', '2019-10-17 11:37:30', '1');
+INSERT INTO `com_role` VALUES ('1000001', 'ADMIN', '超级管理员', '/**', '', null, '2019-10-17 11:37:30', '1');
+INSERT INTO `com_role` VALUES ('1000002', 'NORMAL', '普通角色', '/**', '', null, null, '1');
 
 -- ----------------------------
 -- Table structure for com_user
@@ -140,6 +109,11 @@ CREATE TABLE `com_user` (
   `account` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '账号（手机号）',
   `user_name` varchar(50) DEFAULT NULL COMMENT '用户名',
   `password` varchar(64) DEFAULT NULL COMMENT '密码（bcrypt加密）',
+  `role_ids` varchar(1000) DEFAULT NULL COMMENT '角色id,逗号分隔',
+  `enabled` tinyint(4) DEFAULT NULL COMMENT '可用性 :true:1 false:0',
+  `account_non_expired` tinyint(4) DEFAULT NULL COMMENT '过期性 :true:1 false:0',
+  `credentials_non_expired` tinyint(4) DEFAULT NULL COMMENT '有效性 :true:1 false:0',
+  `account_non_locked` tinyint(4) DEFAULT NULL COMMENT '锁定性 :true:1 false:0',
   `status` tinyint(3) DEFAULT '1' COMMENT '状态：正常/禁用',
   `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`user_id`)
@@ -148,48 +122,19 @@ CREATE TABLE `com_user` (
 -- ----------------------------
 -- Records of com_user
 -- ----------------------------
-INSERT INTO `com_user` VALUES ('1000001', 'admin', 'admin', '$2a$10$LFKYVqSeWLwuRzSK57Ef5.x2KZVhVogg8u9ZOLUtDVhPvgduRLJYO', '1', '2019-11-04 11:22:19');
-INSERT INTO `com_user` VALUES ('1000048', '13427538901', '13427538901', '$2a$10$niDEoOUOFm5ilJ3n.M5WqOI.rDYckVILvsv6UAXynQkI/DmbIZW7y', '1', '2019-11-04 11:18:08');
-INSERT INTO `com_user` VALUES ('1000049', '13711425321', '海雷', '$2a$10$qbhW6PneWj1rSJsO2Ndqj.j94KiDcO7P0xpIM2h5t/mHtBJFzFZ3u', '1', '2019-11-04 11:20:30');
-INSERT INTO `com_user` VALUES ('1000050', '13800000001', '李贤惠', '$2a$10$jfbwMIdkK8k0HDQ9NHqc/uuVCR2xEI4viDc1SdwcklecCI6DW9FQu', '1', '2019-11-04 11:20:47');
-INSERT INTO `com_user` VALUES ('1000051', '158182196931', 'JOE', '$2a$10$zTNxGbxpYOhhkgOnMpsBuuIlfx6jWNFMXH8CrVBcBg4MILXbjfpEq', '1', '2019-11-04 11:21:09');
-INSERT INTO `com_user` VALUES ('1000052', '18079101905', '许丹', '$2a$10$GkpSjupugG4QjqbFCkXapuu3RG/oaAJ96TUflc4Q/1O6W7s3IXfuy', '1', '2019-11-04 11:21:33');
-INSERT INTO `com_user` VALUES ('1000053', '18889102887', '吴育飞', '$2a$10$Hxocw/aII30DPJvx8fzUkuybYhmnp72QLMplFTVh3FrWuI8cqtcOa', '1', '2019-11-04 14:25:58');
-INSERT INTO `com_user` VALUES ('1000054', 'liulijun', 'liulijun', '$2a$10$mJiczmhOlYCDYH528l7IzewJesK79Vc/FiLS2Akfi598fFzazsdMe', '1', '2019-11-04 15:15:40');
-INSERT INTO `com_user` VALUES ('1000055', '13168745249', '荣权', '$2a$10$t/4sbzF0h36NUw4mJXgBgu2UnTK.bAZSe2WD8VQm4jFsWOghFjIg6', '1', '2019-11-04 17:12:37');
-INSERT INTO `com_user` VALUES ('1000056', '1380000001', 'joe', '$2a$10$lxkc3nC23oyCVUYFGuygB.jYAFXGGGEFtw7LCNSf4/fjUqmxBzSs2', '1', '2019-11-04 17:16:11');
-INSERT INTO `com_user` VALUES ('1000057', '13400000001', 'abc', '$2a$10$0hQ1tULCtqWH9R.mZInKUO9Cx6OPDpeVXeW12sfQq2UYNyRYbUiR2', '1', '2019-11-04 17:20:32');
-INSERT INTO `com_user` VALUES ('1000058', '18826222492', 'test1', '$2a$10$Pb3oiXXCi5kMXbt53Z/o/.CKs7yUtmfKEdHFHLv/Rklx4nIY0M1ea', '1', '2019-11-06 16:03:45');
-INSERT INTO `com_user` VALUES ('1000059', '18826222493', 'test2', '$2a$10$J4TRqiizgUqpd.bCXx.EOOHXyCJ3NeAKloOHGlnalsPZo5WPoR.jm', '1', '2019-11-12 18:18:53');
-
--- ----------------------------
--- Table structure for com_user_role
--- ----------------------------
-DROP TABLE IF EXISTS `com_user_role`;
-CREATE TABLE `com_user_role` (
-  `ur_id` bigint(20) NOT NULL COMMENT '主键',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '用户主键',
-  `role_id` bigint(20) DEFAULT NULL COMMENT '权限主键',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`ur_id`),
-  UNIQUE KEY `com_user_role_index` (`user_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='4、用户角色关联表';
-
--- ----------------------------
--- Records of com_user_role
--- ----------------------------
-INSERT INTO `com_user_role` VALUES ('1000001', '1000001', '1000001', '2019-10-17 11:37:30');
-INSERT INTO `com_user_role` VALUES ('1000002', '1000048', '1000001', '2019-11-04 11:18:09');
-INSERT INTO `com_user_role` VALUES ('1000003', '1000049', '1000001', '2019-11-04 11:20:30');
-INSERT INTO `com_user_role` VALUES ('1000004', '1000050', '1000001', '2019-11-04 11:20:47');
-INSERT INTO `com_user_role` VALUES ('1000005', '1000051', '1000001', '2019-11-04 11:21:09');
-INSERT INTO `com_user_role` VALUES ('1000006', '1000052', '1000001', '2019-11-04 11:21:33');
-INSERT INTO `com_user_role` VALUES ('1000007', '1000053', '1000001', '2019-11-04 14:25:58');
-INSERT INTO `com_user_role` VALUES ('1000008', '1000054', '1000001', '2019-11-04 15:26:32');
-INSERT INTO `com_user_role` VALUES ('1000009', '1000055', '1000001', '2019-11-04 17:12:37');
-INSERT INTO `com_user_role` VALUES ('1000010', '1000056', '1000001', '2019-11-04 17:16:11');
-INSERT INTO `com_user_role` VALUES ('1000011', '1000057', '1000001', '2019-11-04 17:20:32');
-INSERT INTO `com_user_role` VALUES ('1000012', '1000059', '1000001', '2019-11-15 17:25:27');
+INSERT INTO `com_user` VALUES ('1000001', 'admin', 'admin', '$2a$10$LFKYVqSeWLwuRzSK57Ef5.x2KZVhVogg8u9ZOLUtDVhPvgduRLJYO', '', '1', '1', '1', '1', '1', '2020-07-22 22:16:44');
+INSERT INTO `com_user` VALUES ('1000048', '13427538901', '13427538901', '$2a$10$niDEoOUOFm5ilJ3n.M5WqOI.rDYckVILvsv6UAXynQkI/DmbIZW7y', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:44');
+INSERT INTO `com_user` VALUES ('1000049', '13711425321', '海雷', '$2a$10$qbhW6PneWj1rSJsO2Ndqj.j94KiDcO7P0xpIM2h5t/mHtBJFzFZ3u', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:45');
+INSERT INTO `com_user` VALUES ('1000050', '13800000001', '李贤惠', '$2a$10$jfbwMIdkK8k0HDQ9NHqc/uuVCR2xEI4viDc1SdwcklecCI6DW9FQu', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:46');
+INSERT INTO `com_user` VALUES ('1000051', '158182196931', 'JOE', '$2a$10$zTNxGbxpYOhhkgOnMpsBuuIlfx6jWNFMXH8CrVBcBg4MILXbjfpEq', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:46');
+INSERT INTO `com_user` VALUES ('1000052', '18079101905', '许丹', '$2a$10$GkpSjupugG4QjqbFCkXapuu3RG/oaAJ96TUflc4Q/1O6W7s3IXfuy', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:47');
+INSERT INTO `com_user` VALUES ('1000053', '18889102887', '吴育飞', '$2a$10$Hxocw/aII30DPJvx8fzUkuybYhmnp72QLMplFTVh3FrWuI8cqtcOa', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:47');
+INSERT INTO `com_user` VALUES ('1000054', 'liulijun', 'liulijun', '$2a$10$mJiczmhOlYCDYH528l7IzewJesK79Vc/FiLS2Akfi598fFzazsdMe', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:56:30');
+INSERT INTO `com_user` VALUES ('1000055', '13168745249', '荣权', '$2a$10$t/4sbzF0h36NUw4mJXgBgu2UnTK.bAZSe2WD8VQm4jFsWOghFjIg6', '1000001,1000002', '1', '1', '1', '1', '1', '2020-07-22 22:16:49');
+INSERT INTO `com_user` VALUES ('1000056', '1380000001', 'joe', '$2a$10$lxkc3nC23oyCVUYFGuygB.jYAFXGGGEFtw7LCNSf4/fjUqmxBzSs2', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:49');
+INSERT INTO `com_user` VALUES ('1000057', '13400000001', 'abc', '$2a$10$0hQ1tULCtqWH9R.mZInKUO9Cx6OPDpeVXeW12sfQq2UYNyRYbUiR2', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:50');
+INSERT INTO `com_user` VALUES ('1000058', '18826222492', 'test1', '$2a$10$Pb3oiXXCi5kMXbt53Z/o/.CKs7yUtmfKEdHFHLv/Rklx4nIY0M1ea', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:50');
+INSERT INTO `com_user` VALUES ('1000059', '18826222493', 'test2', '$2a$10$J4TRqiizgUqpd.bCXx.EOOHXyCJ3NeAKloOHGlnalsPZo5WPoR.jm', '1000001', '1', '1', '1', '1', '1', '2020-07-22 22:16:55');
 
 -- ----------------------------
 -- Table structure for gateway_route
