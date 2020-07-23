@@ -1,14 +1,11 @@
-package com.cloud.frame.frameauth.util;
+package com.cloud.frame.authclient.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,27 +22,7 @@ import java.util.stream.Collectors;
  *  2.调用buildTree方法返回List<Node>
  *  3.将返回的List<Node>强转成自定义的类M
  */
-@Slf4j
-@NoArgsConstructor
-@AllArgsConstructor
-public class TreeBuilder {
-
-    /**
-     * 构建树形结构
-     * @return
-     */
-    public static List<Node> buildTree(List<Node> allNodes,String rootPid) {
-        List<Node> treeNodes = Lists.newArrayList();
-        List<Node> rootNodes = getRootNodes(allNodes,rootPid);
-        Map<String, List<Node>> pidMap = allNodes.stream()
-                .filter(e->StringUtils.isNotEmpty(e.getPId()))
-                .collect(Collectors.groupingBy(Node::getPId));
-        for (Node rootNode : rootNodes) {
-            buildChildNodes(rootNode,pidMap);
-            treeNodes.add(rootNode);
-        }
-        return treeNodes;
-    }
+public class TreeBuilder  {
 
     /**
      * 获取集合中所有的根节点
@@ -63,6 +40,23 @@ public class TreeBuilder {
         return rootNodes.stream()
                 .sorted(Comparator.comparing(Node::getWgt))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 构建树形结构
+     * @return
+     */
+    public static List<Node> buildTree(List<Node> allNodes,String rootPid) {
+        List<Node> treeNodes = Lists.newArrayList();
+        List<Node> rootNodes = getRootNodes(allNodes,rootPid);
+        Map<String, List<Node>> pidMap = allNodes.stream()
+                .filter(e->StringUtils.isNotEmpty(e.getPId()))
+                .collect(Collectors.groupingBy(Node::getPId));
+        for (Node rootNode : rootNodes) {
+            buildChildNodes(rootNode,pidMap);
+            treeNodes.add(rootNode);
+        }
+        return treeNodes;
     }
 
     /**

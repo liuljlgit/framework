@@ -1,5 +1,6 @@
 package com.cloud.frame.authclient.feign;
 
+import com.cloud.frame.authclient.dto.MenuTreeDto;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public interface ComMenuFeign {
 
     @PostMapping(value = "/commenu/list")
     @ApiOperation(value = "查询所有列表" , notes = "author: llj")
-    CommonResp<List<ComMenu>> selectList(@RequestBody ComMenu comMenu);
+    CommonResp<List<MenuTreeDto>> selectList(@RequestBody ComMenu comMenu);
 
     @PostMapping(value = "/commenu/page")
     @ApiOperation(value = "分页查询" , notes = "author: llj")
@@ -37,5 +38,9 @@ public interface ComMenuFeign {
     @ApiOperation(value = "根据主键删除",notes = "author: llj")
     @ApiImplicitParam(name="menuId", value="主键",required = true)
     CommonResp<Object> deleteById(@RequestParam(value="menuId") @NotNull Long menuId);
+
+//    @GetMapping(value = "/commenu/tree")
+//    @ApiOperation(value = "得到菜单树", notes = "author: llj")
+//    CommonResp<Object> menuTree();
 
 }

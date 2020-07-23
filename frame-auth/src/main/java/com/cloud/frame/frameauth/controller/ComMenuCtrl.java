@@ -1,9 +1,14 @@
 package com.cloud.frame.frameauth.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.cloud.frame.authclient.dto.MenuTreeDto;
+import com.cloud.frame.authclient.util.TreeBuilder;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import io.swagger.annotations.*;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -30,8 +36,15 @@ public class ComMenuCtrl implements ComMenuFeign {
     }
 
     @Override
-    public CommonResp<List<ComMenu>> selectList(@RequestBody ComMenu comMenu){
-        return RespEntity.ok(comMenuService.selectList(comMenu));
+    public CommonResp<List<MenuTreeDto>> selectList(@RequestBody ComMenu comMenu){
+        List<TreeBuilder.Node> menuTreeDtos = comMenuService.selectList(comMenu).stream().map(e -> {
+            MenuTreeDto menuTreeDto = new MenuTreeDto();
+            BeanUtils.copyProperties(e, menuTreeDto);
+            return menuTreeDto;
+        }).collect(Collectors.toList());
+        List<TreeBuilder.Node> nodes = TreeBuilder.buildTree(menuTreeDtos, "0");
+        List<MenuTreeDto> trees = JSONArray.parseArray(JSON.toJSONString(nodes), MenuTreeDto.class);
+        return RespEntity.ok(trees);
     }
 
     @Override
@@ -50,5 +63,7 @@ public class ComMenuCtrl implements ComMenuFeign {
         comMenuService.deleteById(menuId);
         return RespEntity.ok();
     }
+
+
 
 }
