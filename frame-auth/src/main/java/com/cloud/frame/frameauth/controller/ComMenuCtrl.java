@@ -59,7 +59,7 @@ public class ComMenuCtrl implements ComMenuFeign {
     }
 
     @Override
-    public CommonResp<List<MenuTreeDto>> menuTree() {
+    public CommonResp<Object> menuTree() {
         List<ComMenu> comMenus = comMenuService.selectList(new ComMenu());
         Map<Long, String> menusMap = comMenus.stream()
                 .collect(Collectors.toMap(ComMenu::getMenuId, ComMenu::getMenuName));
@@ -73,8 +73,7 @@ public class ComMenuCtrl implements ComMenuFeign {
             return menuTreeDto;
         }).collect(Collectors.toList());
         List<TreeUtil.Node> nodes = TreeUtil.buildTree(menuTreeDtos, 0L);
-        List<MenuTreeDto> trees = JSONArray.parseArray(JSON.toJSONString(nodes), MenuTreeDto.class);
-        return RespEntity.ok(trees);
+        return RespEntity.ok(nodes);
     }
 
 

@@ -41,6 +41,6 @@ public interface ComMenuFeign {
 
     @GetMapping(value = "/commenu/tree")
     @ApiOperation(value = "得到菜单树", notes = "author: llj")
-    CommonResp<List<MenuTreeDto>> menuTree();
+    CommonResp<Object> menuTree();
 
 }

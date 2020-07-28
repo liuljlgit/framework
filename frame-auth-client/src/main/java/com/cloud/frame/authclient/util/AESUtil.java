@@ -1,10 +1,8 @@
 package com.cloud.frame.authclient.util;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.StringUtils;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -23,7 +21,7 @@ public class AESUtil {
 		cipher.init(Cipher.ENCRYPT_MODE,
 				new SecretKeySpec(secertkey.getBytes("utf-8"), "AES"));
 		byte[] bytes = cipher.doFinal(content.getBytes("utf-8"));
-		String result = new BASE64Encoder().encode(bytes);
+		String result = Base64.encodeBase64URLSafeString(bytes);
 		return result;
 	}
 
@@ -37,7 +35,7 @@ public class AESUtil {
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE,
 				new SecretKeySpec(secertkey.getBytes("utf-8"), "AES"));
-		byte[] bytes = new BASE64Decoder().decodeBuffer(encryptStr);
+		byte[] bytes = Base64.decodeBase64(encryptStr);
 		bytes = cipher.doFinal(bytes);
 		return new String(bytes);
 	}
