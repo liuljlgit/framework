@@ -1,6 +1,7 @@
 package com.cloud.frame.resourceserver.controller;
 
 import com.cloud.frame.framesecurity.entity.LoginUser;
+import com.cloud.frame.framesecurity.util.JwtUtil;
 import com.cloud.frame.framesecurity.util.SecurityUtil;
 import com.cloud.frame.resourceclient.entity.Holiday;
 import com.cloud.frame.resourceclient.feign.HolidayFeign;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -36,6 +38,8 @@ public class HolidayCtrl implements HolidayFeign {
 
     @Override
     public CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday, HttpServletRequest request){
+        String accessToken = request.getHeader("Authorization").replaceAll("Bearer ", "");
+        Map<String, Object> checkGetJwtClaimsMap = JwtUtil.checkGetJwtClaimsMap(accessToken);
         LoginUser loginUser = SecurityUtil.getLoginUser();
         return RespEntity.ok(holidayService.selectList(holiday));
     }
