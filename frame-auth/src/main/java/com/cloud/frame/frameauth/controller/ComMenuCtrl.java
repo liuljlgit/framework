@@ -3,7 +3,7 @@ package com.cloud.frame.frameauth.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.cloud.frame.authclient.dto.MenuTreeDto;
-import com.cloud.frame.authclient.util.TreeBuilder;
+import com.cloud.frame.authclient.util.TreeUtil;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,15 +37,8 @@ public class ComMenuCtrl implements ComMenuFeign {
     }
 
     @Override
-    public CommonResp<List<MenuTreeDto>> selectList(@RequestBody ComMenu comMenu){
-        List<TreeBuilder.Node> menuTreeDtos = comMenuService.selectList(comMenu).stream().map(e -> {
-            MenuTreeDto menuTreeDto = new MenuTreeDto();
-            BeanUtils.copyProperties(e, menuTreeDto);
-            return menuTreeDto;
-        }).collect(Collectors.toList());
-        List<TreeBuilder.Node> nodes = TreeBuilder.buildTree(menuTreeDtos, "0");
-        List<MenuTreeDto> trees = JSONArray.parseArray(JSON.toJSONString(nodes), MenuTreeDto.class);
-        return RespEntity.ok(trees);
+    public CommonResp<List<ComMenu>> selectList(@RequestBody ComMenu comMenu){
+        return RespEntity.ok(comMenuService.selectList(comMenu));
     }
 
     @Override
@@ -64,6 +58,24 @@ public class ComMenuCtrl implements ComMenuFeign {
         return RespEntity.ok();
     }
 
+    @Override
+    public CommonResp<List<MenuTreeDto>> menuTree() {
+        List<ComMenu> comMenus = comMenuService.selectList(new ComMenu());
+        Map<Long, String> menusMap = comMenus.stream()
+                .collect(Collectors.toMap(ComMenu::getMenuId, ComMenu::getMenuName));
+        List<TreeUtil.Node> menuTreeDtos = comMenus.stream().map(e -> {
+            MenuTreeDto menuTreeDto = new MenuTreeDto();
+            BeanUtils.copyProperties(e, menuTreeDto);
+            menuTreeDto.setId(e.getMenuId());
+            menuTreeDto.setPId(e.getParMenuId());
+            menuTreeDto.setPName(menusMap.getOrDefault(e.getParMenuId(),""));
+            menuTreeDto.setWgt(e.getWeight().intValue());
+            return menuTreeDto;
+        }).collect(Collectors.toList());
+        List<TreeUtil.Node> nodes = TreeUtil.buildTree(menuTreeDtos, 0L);
+        List<MenuTreeDto> trees = JSONArray.parseArray(JSON.toJSONString(nodes), MenuTreeDto.class);
+        return RespEntity.ok(trees);
+    }
 
 
 }

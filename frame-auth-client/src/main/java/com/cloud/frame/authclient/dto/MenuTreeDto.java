@@ -1,7 +1,6 @@
 package com.cloud.frame.authclient.dto;
 
-import com.cloud.frame.authclient.util.TreeBuilder;
-import com.cloud.ftl.ftlbasic.annotation.PrimaryKey;
+import com.cloud.frame.authclient.util.TreeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +14,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuTreeDto extends TreeBuilder.Node {
+public class MenuTreeDto extends TreeUtil.Node {
 
     @ApiModelProperty("主键")
     private Long menuId;

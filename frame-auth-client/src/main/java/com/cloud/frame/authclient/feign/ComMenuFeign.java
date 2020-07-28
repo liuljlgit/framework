@@ -24,7 +24,7 @@ public interface ComMenuFeign {
 
     @PostMapping(value = "/commenu/list")
     @ApiOperation(value = "查询所有列表" , notes = "author: llj")
-    CommonResp<List<MenuTreeDto>> selectList(@RequestBody ComMenu comMenu);
+    CommonResp<List<ComMenu>> selectList(@RequestBody ComMenu comMenu);
 
     @PostMapping(value = "/commenu/page")
     @ApiOperation(value = "分页查询" , notes = "author: llj")
@@ -39,8 +39,8 @@ public interface ComMenuFeign {
     @ApiImplicitParam(name="menuId", value="主键",required = true)
     CommonResp<Object> deleteById(@RequestParam(value="menuId") @NotNull Long menuId);
 
-//    @GetMapping(value = "/commenu/tree")
-//    @ApiOperation(value = "得到菜单树", notes = "author: llj")
-//    CommonResp<Object> menuTree();
+    @GetMapping(value = "/commenu/tree")
+    @ApiOperation(value = "得到菜单树", notes = "author: llj")
+    CommonResp<List<MenuTreeDto>> menuTree();
 
 }

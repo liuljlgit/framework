@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,7 +21,24 @@ import java.util.stream.Collectors;
  *  2.调用buildTree方法返回List<Node>
  *  3.将返回的List<Node>强转成自定义的类M
  */
-public class TreeBuilder  {
+public class TreeUtil {
+
+    /**
+     * 构建树形结构
+     * @return
+     */
+    public static List<Node> buildTree(List<Node> allNodes, Long rootPid) {
+        List<Node> treeNodes = Lists.newArrayList();
+        List<Node> rootNodes = getRootNodes(allNodes,rootPid);
+        Map<Long, List<Node>> pidMap = allNodes.stream()
+                .filter(e-> !e.getPId().equals(0L) )
+                .collect(Collectors.groupingBy(Node::getPId));
+        for (Node rootNode : rootNodes) {
+            buildChildNodes(rootNode,pidMap);
+            treeNodes.add(rootNode);
+        }
+        return treeNodes;
+    }
 
     /**
      * 获取集合中所有的根节点
@@ -30,7 +46,7 @@ public class TreeBuilder  {
      * @param rootPid
      * @param allNodes
      */
-    private static List<Node> getRootNodes(List<Node> allNodes,String rootPid) {
+    private static List<Node> getRootNodes(List<Node> allNodes, Long rootPid) {
         List<Node> rootNodes = Lists.newArrayList();
         for (Node n : allNodes){
             if (rootPid.equals(n.getPId())) {
@@ -43,29 +59,13 @@ public class TreeBuilder  {
     }
 
     /**
-     * 构建树形结构
-     * @return
-     */
-    public static List<Node> buildTree(List<Node> allNodes,String rootPid) {
-        List<Node> treeNodes = Lists.newArrayList();
-        List<Node> rootNodes = getRootNodes(allNodes,rootPid);
-        Map<String, List<Node>> pidMap = allNodes.stream()
-                .filter(e->StringUtils.isNotEmpty(e.getPId()))
-                .collect(Collectors.groupingBy(Node::getPId));
-        for (Node rootNode : rootNodes) {
-            buildChildNodes(rootNode,pidMap);
-            treeNodes.add(rootNode);
-        }
-        return treeNodes;
-    }
-
-    /**
      * 递归子节点
      * @param pNode
      * @param pidMap
      */
-    private static void buildChildNodes(Node pNode, Map<String, List<Node>> pidMap) {
-        List<Node> childNodes = pidMap.getOrDefault(pNode.getId(), Lists.newArrayList()).stream()
+    private static void buildChildNodes(Node pNode, Map<Long, List<Node>> pidMap) {
+        List<Node> childNodes = pidMap.getOrDefault(pNode.getId(), Lists.newArrayList())
+                .stream()
                 .sorted(Comparator.comparing(Node::getWgt))
                 .collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(childNodes)) {
@@ -84,10 +84,10 @@ public class TreeBuilder  {
     public static class Node {
 
         @ApiModelProperty(value = "主键",hidden = true)
-        private String id;
+        private Long id;
 
         @ApiModelProperty(value = "父级主键",hidden = true)
-        private String pId;
+        private Long pId;
 
         @ApiModelProperty(value = "父级名称",hidden = true)
         private String pName;
