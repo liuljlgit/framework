@@ -1,6 +1,7 @@
 package com.cloud.frame.framesecurity.voter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cloud.frame.framesecurity.config.IgnoreUrl;
 import com.cloud.frame.framesecurity.constant.RedisKey;
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.frame.framesecurity.util.UrlUtil;
@@ -30,10 +31,14 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
 
     private String resourceId;
 
-    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign, String resourceId) {
+    private Set<String> urlSet;
+
+    public PermissionAccessDecisionVoter(RedisTemplate<String, Object> redisTemplate, SecurityFeign securityFeign,
+                                         String resourceId, IgnoreUrl ignoreUrl) {
         this.redisTemplate = redisTemplate;
         this.securityFeign = securityFeign;
         this.resourceId = resourceId;
+        this.urlSet = new HashSet<>(ignoreUrl.getUri());;
     }
 
     @Override
@@ -42,6 +47,12 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
                     Collection<ConfigAttribute> attributes) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String servletPath = fi.getHttpRequest().getServletPath();
+        //忽视鉴权开放
+        Boolean isIgnoreUrl = UrlUtil.matching(urlSet, servletPath);
+        if(isIgnoreUrl){
+            return ACCESS_GRANTED;
+        }
+
         //获取资源服务器前缀
         Map<Object, Object> resourceGatewayPrefixMap = redisTemplate.opsForHash().entries(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP);
         if(Objects.isNull(resourceGatewayPrefixMap) || resourceGatewayPrefixMap.size() == 0){

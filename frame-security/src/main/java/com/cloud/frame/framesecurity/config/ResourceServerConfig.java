@@ -96,7 +96,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     @ConditionalOnMissingBean(AccessDecisionVoter.class)
     public PermissionAccessDecisionVoter accessDecisionVoter(RedisTemplate<String,Object> redisTemplate,SecurityFeign securityFeign){
-        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign,resourceId);
+        return new PermissionAccessDecisionVoter(redisTemplate,securityFeign,resourceId,ignoreUrl);
     }
 
 }
