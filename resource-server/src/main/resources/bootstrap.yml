@@ -50,10 +50,14 @@ security:
 oauth2:
   ignore:
     uri:
-      - /error
       - /swagger-ui.html/**
-      - /webjars/**
+      - /doc.html/**
       - /swagger-resources/**
+      - /webjars/**
+      - /images/**
+      - /configuration/ui
+      - /configuration/security
       - /v2/api-docs
       - /csrf
       - /favicon.ico
+      - /error
