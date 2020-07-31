@@ -38,7 +38,7 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         this.redisTemplate = redisTemplate;
         this.securityFeign = securityFeign;
         this.resourceId = resourceId;
-        this.urlSet = new HashSet<>(ignoreUrl.getUri());;
+        this.urlSet = new HashSet<>(ignoreUrl.getUri());
     }
 
     @Override
