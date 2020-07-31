@@ -48,6 +48,10 @@ security:
 aes:
   secertKey: yq46KaWWm*xA@!4&
 
+explogin:
+  enable: false
+  url: http://frame-auth-server/oauth/extapplogin?encryptStr=
+
 oauth2:
   grantType: password
   scope: server

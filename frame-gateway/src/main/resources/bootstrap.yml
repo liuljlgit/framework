@@ -27,11 +27,6 @@ ribbon:
   ReadTimeout: 60000
   ConnectTimeout: 60000
 
-oauth2:
-  ignore:
-    uri:
-      - /refresh/routes   #刷新路由
-
 management:
   endpoints:
     web:

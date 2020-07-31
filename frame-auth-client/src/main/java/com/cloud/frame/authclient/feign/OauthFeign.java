@@ -21,7 +21,11 @@ public interface OauthFeign {
 
     @PostMapping("/oauth/login")
     @ApiOperation(value = "登录" , notes = "author: llj")
-    OauthTokenResp login(@RequestBody LoginReq loginReq);
+    OauthTokenResp defaultLogin(@RequestParam("encryptStr") String encryptStr);
+
+    @GetMapping("/oauth/extapplogin")
+    @ApiOperation(value = "第三方应用登录" , notes = "author: llj")
+    String extAppLogin(@RequestParam("encryptStr") String encryptStr);
 
     @PostMapping("/oauth/register")
     @ApiOperation(value = "注册" , notes = "author: llj")

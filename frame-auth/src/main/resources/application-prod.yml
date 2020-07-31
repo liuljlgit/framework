@@ -26,6 +26,11 @@ spring:
         max-idle: 80
         min-idle: 10
 
+#swagger
+swagger:
+  enable: false
+  basePackage: com.cloud
+
 #打印sql
 DEBUG: true
 logging:

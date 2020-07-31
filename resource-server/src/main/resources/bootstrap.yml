@@ -42,10 +42,15 @@ security:
   oauth2:
     resource:
       id: resource-server
-#      prefer-token-info: false
-#      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
+      #prefer-token-info: false
+      #user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
 
+aes:
+  secertKey: yq46KaWWm*xA@!4&
 
+explogin:
+  enable: true
+  url: http://frame-auth-server/oauth/extapplogin?encryptStr=
 
 oauth2:
   ignore:
