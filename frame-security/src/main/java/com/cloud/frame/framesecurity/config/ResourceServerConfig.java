@@ -64,7 +64,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(new AuthExceptionHandler())//不存在access_token时候响应
             .and()
                 .authorizeRequests()
-                .antMatchers(uri.toArray(new String[uri.size()])).permitAll()   //忽略鉴权的uri
+                .antMatchers(uri.toArray(new String[uri.size()])).permitAll()   //忽略认证的uri,只是认证忽略，投票器还是会进行拦截
                 .accessDecisionManager(accessDecisionManager())                 //权限拦截投票器(可以加自定义权限拦截器)
                 .anyRequest()
                 .authenticated()
