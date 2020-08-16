@@ -19,7 +19,7 @@
     
     <properties>
         <fastjson.version>1.2.40</fastjson.version>
-        <ftl.basic.version>0.0.1-SNAPSHOT</ftl.basic.version>
+        <ftl.basic.version>0.0.2-SNAPSHOT</ftl.basic.version>
         <frame.auth.client.version>0.0.1-SNAPSHOT</frame.auth.client.version>
         <resource.client.version>0.0.1-SNAPSHOT</resource.client.version>
         <frame.security.client.version>0.0.1-SNAPSHOT</frame.security.client.version>

@@ -28,7 +28,7 @@ spring:
 
 #swagger
 swagger:
-  enable: true
+  enable: false
   basePackage: com.cloud
 
 #打印sql

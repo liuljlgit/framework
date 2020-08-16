@@ -45,6 +45,12 @@ security:
 #      prefer-token-info: false
 #      user-info-uri: http://${DEV.HOST:localhost}:10100/app/auth/checkuser
 
+aes:
+  secertKey: yq46KaWWm*xA@!4&
+
+explogin:
+  enable: false
+  url: http://frame-auth-server/oauth/extapplogin?encryptStr=
 
 oauth2:
   grantType: password
@@ -54,14 +60,18 @@ oauth2:
   applicationName: ${spring.application.name}
   ignore:
     uri:
-      - /clientdetails/**   #oauth2客户端
-      - /oauth/**           #oauth2鉴权
-      - /gatewayroutes      #刷新路由
-      - /error
+      - /clientdetails/**     #oauth2客户端
+      - /oauth/**             #oauth2鉴权
+      - /security/**          #security模块接口
+      - /gatewayroutes        #刷新路由
       - /swagger-ui.html/**
-      - /webjars/**
+      - /doc.html/**
       - /swagger-resources/**
+      - /webjars/**
+      - /images/**
+      - /configuration/ui
+      - /configuration/security
       - /v2/api-docs
       - /csrf
       - /favicon.ico
-      - /api-doc.html
+      - /error

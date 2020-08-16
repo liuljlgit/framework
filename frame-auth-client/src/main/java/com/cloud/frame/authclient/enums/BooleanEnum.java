@@ -1,6 +1,4 @@
-package com.cloud.frame.frameauth.enums;
-
-import lombok.Data;
+package com.cloud.frame.authclient.enums;
 
 import java.util.Arrays;
 import java.util.HashMap;
