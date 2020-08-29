@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuTreeDto extends TreeUtil.Node {
+public class MenuTreeDTO extends TreeUtil.Node {
 
     @ApiModelProperty("主键")
     private Long menuId;

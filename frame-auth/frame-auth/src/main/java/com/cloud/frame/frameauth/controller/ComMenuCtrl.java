@@ -1,6 +1,6 @@
 package com.cloud.frame.frameauth.controller;
 
-import com.cloud.frame.authclient.dto.MenuTreeDto;
+import com.cloud.frame.authclient.dto.MenuTreeDTO;
 import com.cloud.frame.framecommon.util.TreeUtil;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
@@ -62,7 +62,7 @@ public class ComMenuCtrl implements ComMenuFeign {
         Map<Long, String> menusMap = comMenus.stream()
                 .collect(Collectors.toMap(ComMenu::getMenuId, ComMenu::getMenuName));
         List<TreeUtil.Node> menuTreeDtos = comMenus.stream().map(e -> {
-            MenuTreeDto menuTreeDto = new MenuTreeDto();
+            MenuTreeDTO menuTreeDto = new MenuTreeDTO();
             BeanUtils.copyProperties(e, menuTreeDto);
             menuTreeDto.setId(e.getMenuId());
             menuTreeDto.setPId(e.getParMenuId());
