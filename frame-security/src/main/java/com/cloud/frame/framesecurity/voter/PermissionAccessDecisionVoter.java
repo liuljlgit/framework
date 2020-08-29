@@ -55,20 +55,16 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
 
         //获取资源服务器前缀
         Map<Object, Object> resourceGatewayPrefixMap = redisTemplate.opsForHash().entries(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP);
-        if(Objects.isNull(resourceGatewayPrefixMap) || resourceGatewayPrefixMap.size() == 0){
-            synchronized (this){
-                resourceGatewayPrefixMap = securityFeign.getResourceGatewayPrefixMap();
-            }
+        if(resourceGatewayPrefixMap.isEmpty()){
+            resourceGatewayPrefixMap = securityFeign.getResourceGatewayPrefixMap();
         }
         //servletPath组装
         servletPath = resourceGatewayPrefixMap.getOrDefault(resourceId,"") + servletPath;
 
         //获取角色对应的URL权限
         Map<Object, Object> rolekeyDetailsMap = redisTemplate.opsForHash().entries(RedisKey.ROLEKEY_DETAILS_MAP);
-        if(Objects.isNull(rolekeyDetailsMap) || rolekeyDetailsMap.size() == 0){
-            synchronized (this){
-                rolekeyDetailsMap = securityFeign.getRolekeyDetailsMap();
-            }
+        if(rolekeyDetailsMap.isEmpty()){
+            rolekeyDetailsMap = securityFeign.getRolekeyDetailsMap();
         }
         //URL权限判断
         Set<String> perUrlList = Sets.newHashSet();

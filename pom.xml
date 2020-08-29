@@ -18,21 +18,27 @@
     <packaging>pom</packaging>
     
     <properties>
-        <fastjson.version>1.2.40</fastjson.version>
-        <ftl.basic.version>0.0.2-SNAPSHOT</ftl.basic.version>
-        <frame.auth.client.version>0.0.1-SNAPSHOT</frame.auth.client.version>
-        <resource.client.version>0.0.1-SNAPSHOT</resource.client.version>
-        <frame.security.client.version>0.0.1-SNAPSHOT</frame.security.client.version>
+        <!-- spring -->
         <spring.cloud.version>Hoxton.SR3</spring.cloud.version>
+        <springboot.version>2.3.1.RELEASE</springboot.version>
+        <!-- tool -->
+        <fastjson.version>1.2.40</fastjson.version>
         <guava.version>20.0</guava.version>
         <mysql.version>5.1.44</mysql.version>
-        <springboot.version>2.3.1.RELEASE</springboot.version>
         <mybatis.version>1.3.0</mybatis.version>
         <vavr.version>0.10.0</vavr.version>
         <commons-pool2.version>2.6.2</commons-pool2.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <validation.version>2.0.1.Final</validation.version>
         <collections4.version>4.4</collections4.version>
+        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+        <!-- common/client -->
+        <ftl.basic.version>0.0.1-SNAPSHOT</ftl.basic.version>
+        <frame.common.version>0.0.1-SNAPSHOT</frame.common.version>
+        <frame.auth.client.version>0.0.1-SNAPSHOT</frame.auth.client.version>
+        <resource.client.version>0.0.1-SNAPSHOT</resource.client.version>
+        <frame.security.client.version>0.0.1-SNAPSHOT</frame.security.client.version>
+
     </properties>
     
     <dependencies>
@@ -51,6 +57,13 @@
                 <version>${spring.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- common -->
+            <dependency>
+                <groupId>cn.chinaunicom.frame</groupId>
+                <artifactId>frame-common</artifactId>
+                <version>${frame.common.version}</version>
             </dependency>
 
             <!-- feign client -->
@@ -135,11 +148,15 @@
 
             <!-- validation -->
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${validation.version}</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>

@@ -51,7 +51,7 @@ public class SecurityCtrl implements SecurityFeign {
     public Map<Object, Object> getResourceGatewayPrefixMap() {
         Map<Object, Object> resourceGatewayPrefixMap = gatewayRouteService.selectList(new GatewayRoute()).stream()
                 .filter(e-> !StringUtils.isEmpty(e.getReourceId()))
-                .collect(Collectors.toMap(e->e.getReourceId(), e->e.getRegexpUrl()));
+                .collect(Collectors.toMap(GatewayRoute::getReourceId, GatewayRoute::getRegexpUrl));
         redisTemplate.opsForHash().putAll(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP,resourceGatewayPrefixMap);
         return resourceGatewayPrefixMap;
     }
@@ -59,7 +59,7 @@ public class SecurityCtrl implements SecurityFeign {
     @Override
     public Map<Object, Object> getRolekeyDetailsMap() {
         Map<Object, Object> rolekeyDetailsMap = comRoleService.selectList(new ComRole()).stream()
-                .collect(Collectors.toMap(e -> "ROLE_" + e.getRoleCode(), e-> JSONObject.toJSONString(e)));
+                .collect(Collectors.toMap(e -> "ROLE_" + e.getRoleCode(), JSONObject::toJSONString));
         redisTemplate.opsForHash().putAll(RedisKey.ROLEKEY_DETAILS_MAP,rolekeyDetailsMap);
         return rolekeyDetailsMap;
     }
@@ -71,8 +71,8 @@ public class SecurityCtrl implements SecurityFeign {
                 .build();
         ComUser dbUser = comUserService.selectOne(comUser);
         LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(dbUser,loginUser);
         if(Objects.nonNull(dbUser)){
+            BeanUtils.copyProperties(dbUser,loginUser);
             redisTemplate.opsForHash().put(RedisKey.PRINCIPAL_LOGINUSER_MAP,dbUser.getUserName(), JSON.toJSONString(loginUser));
         }
         return dbUser;
