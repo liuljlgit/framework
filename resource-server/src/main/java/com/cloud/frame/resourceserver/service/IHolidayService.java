@@ -9,4 +9,6 @@ import com.cloud.frame.resourceclient.entity.Holiday;
  */
 public interface IHolidayService extends IBaseCache<Holiday>{
 
+    void testThreadMdc();
+
 }

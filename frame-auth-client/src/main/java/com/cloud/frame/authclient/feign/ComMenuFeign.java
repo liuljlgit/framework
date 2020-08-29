@@ -1,6 +1,5 @@
 package com.cloud.frame.authclient.feign;
 
-import com.cloud.frame.authclient.dto.MenuTreeDto;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import org.springframework.validation.annotation.Validated;

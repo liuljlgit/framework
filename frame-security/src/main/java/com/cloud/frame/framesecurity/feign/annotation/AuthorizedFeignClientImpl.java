@@ -4,6 +4,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,10 +15,12 @@ import java.util.Objects;
  * @author Liulj
  * @version v 0.1 2019/11/15 15:33
  */
-@Slf4j
-public class UserFeignClientInterceptor implements RequestInterceptor {
+@Configuration
+public class AuthorizedFeignClientImpl implements RequestInterceptor {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
+
+    private static final String TRACE_ID = "traceId";
 
     private static final String BEARER_TOKEN_TYPE = "Bearer";
 
@@ -30,6 +33,7 @@ public class UserFeignClientInterceptor implements RequestInterceptor {
                 return;
             }
             template.header(AUTHORIZATION_HEADER, tokenHeader);
+            template.header(TRACE_ID,httpServletRequest.getHeader(TRACE_ID));
         }
     }
 

@@ -14,10 +14,13 @@ spring:
     default-property-inclusion: non_null
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    servlet:
+      load-on-startup: 0
   servlet:
     multipart:
-      maxFileSize: "1000MB"
-      maxRequestSize: "10000MB"
+      maxFileSize: "50MB"
+      maxRequestSize: "50MB"
 
 feign:
   hystrix:

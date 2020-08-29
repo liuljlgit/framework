@@ -1,5 +1,6 @@
 package com.cloud.frame.resourceserver;
 
+import com.cloud.frame.framesecurity.feign.annotation.EnableGlobalAuthorizedFeignClient;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import org.springframework.web.context.request.RequestContextListener;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableEurekaClient
+@EnableGlobalAuthorizedFeignClient
 @EnableFeignClients(basePackages = {"com.cloud.frame"})
 @ComponentScan("com.cloud")
 @MapperScan("com.cloud.**.dao")

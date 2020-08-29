@@ -1,5 +1,7 @@
 package com.cloud.frame.resourceserver.controller;
 
+import com.cloud.frame.authclient.entity.ComMenu;
+import com.cloud.frame.authclient.feign.ComMenuFeign;
 import com.cloud.frame.framesecurity.entity.LoginUser;
 import com.cloud.frame.framesecurity.util.JwtUtil;
 import com.cloud.frame.framesecurity.util.SecurityUtil;
@@ -31,6 +33,9 @@ public class HolidayCtrl implements HolidayFeign {
     @Autowired
     private IHolidayService holidayService;
 
+    @Autowired
+    private ComMenuFeign comMenuFeign;
+
     @Override
     public CommonResp<Holiday> selectById(@RequestParam("hId") @NotNull Long hId) {
         return RespEntity.ok(holidayService.selectById(hId,"没有符合条件的记录！"));
@@ -38,9 +43,8 @@ public class HolidayCtrl implements HolidayFeign {
 
     @Override
     public CommonResp<List<Holiday>> selectList(@RequestBody Holiday holiday, HttpServletRequest request){
-        String accessToken = request.getHeader("Authorization").replaceAll("Bearer ", "");
-        Map<String, Object> checkGetJwtClaimsMap = JwtUtil.checkGetJwtClaimsMap(accessToken);
-        LoginUser loginUser = SecurityUtil.getLoginUser();
+        comMenuFeign.selectList(new ComMenu());
+        holidayService.testThreadMdc();
         return RespEntity.ok(holidayService.selectList(holiday));
     }
 
