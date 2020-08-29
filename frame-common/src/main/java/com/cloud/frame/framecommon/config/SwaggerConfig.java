@@ -42,19 +42,20 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean(value = "defaultApi")
     public Docket defaultApi() {
-
-        ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
         if(defaultLogin){
-            ticketPar.name("encryptStr").description("默认登录信息")
+            ParameterBuilder encryptStrPar = new ParameterBuilder();
+            encryptStrPar.name("encryptStr").description("默认登录信息")
                     .modelRef(new ModelRef("string")).parameterType("header")
                     .required(false).defaultValue("NBFtHVZsv6zYH1kZaeCasuw7ORm5zjLX7wr3tbFRLPYHqC_x7T1bpZ0s9w0bmX8k").build();
+            pars.add(encryptStrPar.build());
         }
 
-        ticketPar.name("Authorization").description("登录校验")
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        tokenPar.name("Authorization").description("登录校验")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(false).defaultValue("Bearer ").build();
-        pars.add(ticketPar.build());
+        pars.add(tokenPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(groupName)
@@ -62,26 +63,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.cloud"))
                 .paths(PathSelectors.any())
-                .build();
-    }
-
-    @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.cloud"))     //为当前包路径
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    //构建api文档的详细信息函数
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("swagger2文档")                                      //页面标题
-                .contact(new Contact("刘立俊","",""))     //创建人
-                .version("1.0")                                             //版本号
-                .description("API 描述")                                     //描述
                 .build();
     }
 }
