@@ -1,6 +1,6 @@
 package com.cloud.frame.authclient.dto;
 
-import com.cloud.frame.authclient.util.TreeUtil;
+import com.cloud.frame.framecommon.util.TreeUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

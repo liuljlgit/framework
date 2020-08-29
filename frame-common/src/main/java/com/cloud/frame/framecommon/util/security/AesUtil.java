@@ -1,12 +1,13 @@
-package com.cloud.frame.authclient.util;
+package com.cloud.frame.framecommon.util.security;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.StringUtils;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-public class AESUtil {
+public class AesUtil {
 
 	public static final String DEFAULT_SECRET_KEY = "1abcdefgabcdefg2";
 
@@ -53,8 +54,8 @@ public class AESUtil {
 		JSONObject loginJson = new JSONObject();
 		loginJson.put("username","admin");
 		loginJson.put("password","123456");
-		String encryptStr = AESUtil.encrypt(loginJson.toJSONString(), secertKey);
-		String decryptStr = AESUtil.decrypt(encryptStr, secertKey);
+		String encryptStr = AesUtil.encrypt(loginJson.toJSONString(), secertKey);
+		String decryptStr = AesUtil.decrypt(encryptStr, secertKey);
 		System.out.println("明文:" + loginJson.toJSONString());
 		System.out.println("密钥:" + secertKey);
 		System.out.println("加密后信息:" + encryptStr);

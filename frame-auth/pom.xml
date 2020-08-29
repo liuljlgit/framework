@@ -42,13 +42,6 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
-        <!-- common -->
-        <dependency>
-            <groupId>com.cloud.frame</groupId>
-            <artifactId>frame-common</artifactId>
-            <version>${frame.common.version}</version>
-        </dependency>
-
         <!-- feign client -->
         <dependency>
             <groupId>com.cloud.frame</groupId>

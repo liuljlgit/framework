@@ -2,9 +2,9 @@ package com.cloud.frame.frameauth.security;
 
 import com.cloud.frame.authclient.entity.ComRole;
 import com.cloud.frame.authclient.entity.ComUser;
-import com.cloud.frame.authclient.enums.BooleanEnum;
 import com.cloud.frame.frameauth.service.IComRoleService;
 import com.cloud.frame.frameauth.service.IComUserService;
+import com.cloud.frame.framecommon.enums.BoolEnum;
 import com.cloud.frame.framesecurity.entity.SecurityAuthority;
 import com.cloud.frame.framesecurity.entity.SecurityUser;
 import com.cloud.ftl.ftlbasic.enums.Opt;
@@ -71,10 +71,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //accountNonExpired 过期性 :true:没过期 false:过期
         //credentialsNonExpired 有效性 :true:凭证有效 false:凭证无效
         //accountNonLocked 锁定性 :true:未锁定 false:已锁定
-        Boolean enabled = BooleanEnum.codeBoolMap.get(dbUser.getEnabled());
-        Boolean accountNonExpired = BooleanEnum.codeBoolMap.get(dbUser.getAccountNonExpired());
-        Boolean credentialsNonExpired = BooleanEnum.codeBoolMap.get(dbUser.getCredentialsNonExpired());
-        Boolean accountNonLocked = BooleanEnum.codeBoolMap.get(dbUser.getAccountNonLocked());
+        Boolean enabled = BoolEnum.codeBoolMap.get(dbUser.getEnabled());
+        Boolean accountNonExpired = BoolEnum.codeBoolMap.get(dbUser.getAccountNonExpired());
+        Boolean credentialsNonExpired = BoolEnum.codeBoolMap.get(dbUser.getCredentialsNonExpired());
+        Boolean accountNonLocked = BoolEnum.codeBoolMap.get(dbUser.getAccountNonLocked());
         SecurityUser securityUser = new SecurityUser(dbUser.getUserName(),dbUser.getPassword(),
                 enabled,accountNonExpired,credentialsNonExpired,accountNonLocked,grantedAuthorities);
         securityUser.setId(dbUser.getUserId());

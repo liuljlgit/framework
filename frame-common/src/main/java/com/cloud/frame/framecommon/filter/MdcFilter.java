@@ -1,6 +1,5 @@
-package com.cloud.frame.resourceserver.filter;
+package com.cloud.frame.framecommon.filter;
 
-import com.cloud.frame.framesecurity.filter.HeaderMapRequestWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;

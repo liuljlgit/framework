@@ -1,10 +1,10 @@
-package com.cloud.frame.authclient.enums;
+package com.cloud.frame.framecommon.enums;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum BooleanEnum {
+public enum BoolEnum {
     FALSE_ENUM((byte)0,false),
     TRUE_ENUM((byte)1,true);
 
@@ -17,11 +17,11 @@ public enum BooleanEnum {
     public static Map<Boolean, Byte> boolCodeMap = new HashMap<>();
 
     static {
-        Arrays.stream(BooleanEnum.values()).forEach(e -> codeBoolMap.put(e.getCode(), e.getBool()));
-        Arrays.stream(BooleanEnum.values()).forEach(e -> boolCodeMap.put(e.getBool(), e.getCode()));
+        Arrays.stream(BoolEnum.values()).forEach(e -> codeBoolMap.put(e.getCode(), e.getBool()));
+        Arrays.stream(BoolEnum.values()).forEach(e -> boolCodeMap.put(e.getBool(), e.getCode()));
     }
 
-    BooleanEnum(Byte code, Boolean bool) {
+    BoolEnum(Byte code, Boolean bool) {
         this.code = code;
         this.bool = bool;
     }

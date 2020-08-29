@@ -30,6 +30,8 @@ spring:
 swagger:
   enable: true
   basePackage: com.cloud
+  groupName: 资源服务文档
+  defaultLogin: true
 
 #打印sql
 DEBUG: true

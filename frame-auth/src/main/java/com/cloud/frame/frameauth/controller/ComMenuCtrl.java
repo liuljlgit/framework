@@ -1,9 +1,7 @@
 package com.cloud.frame.frameauth.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.cloud.frame.authclient.dto.MenuTreeDto;
-import com.cloud.frame.authclient.util.TreeUtil;
+import com.cloud.frame.framecommon.util.TreeUtil;
 import com.cloud.ftl.ftlbasic.webEntity.PageBean;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;

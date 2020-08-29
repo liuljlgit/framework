@@ -1,4 +1,4 @@
-package com.cloud.frame.authclient.util;
+package com.cloud.frame.framecommon.util;
 
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;

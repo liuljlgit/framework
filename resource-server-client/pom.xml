@@ -26,6 +26,11 @@
             <artifactId>ftl-basic</artifactId>
             <version>${ftl.basic.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloud.frame</groupId>
+            <artifactId>frame-common</artifactId>
+            <version>${frame.common.version}</version>
+        </dependency>
     </dependencies>
     
 </project>
