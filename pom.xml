@@ -34,6 +34,7 @@
         <commons.codec>1.14</commons.codec>
         <commons.io>2.6</commons.io>
         <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+        <springsocial.version>1.1.6.RELEASE</springsocial.version>
         <!-- common/client -->
         <ftl.basic.version>0.0.1-SNAPSHOT</ftl.basic.version>
         <frame.common.version>0.0.1-SNAPSHOT</frame.common.version>
@@ -168,6 +169,28 @@
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${validation.version}</version>
+            </dependency>
+
+            <!-- Spring Social -->
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-core</artifactId>
+                <version>${springsocial.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-config</artifactId>
+                <version>${springsocial.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-security</artifactId>
+                <version>${springsocial.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-web</artifactId>
+                <version>${springsocial.version}</version>
             </dependency>
 
         </dependencies>
