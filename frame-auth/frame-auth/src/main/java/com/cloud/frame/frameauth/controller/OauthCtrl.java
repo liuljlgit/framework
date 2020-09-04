@@ -10,7 +10,7 @@ import com.cloud.frame.authclient.req.RegisterReq;
 import com.cloud.frame.authclient.req.LoginReq;
 import com.cloud.frame.authclient.resp.OauthTokenResp;
 import com.cloud.frame.frameauth.service.IComUserService;
-import com.cloud.frame.framecommon.util.security.AesUtil;
+import com.cloud.frame.framecommon.util.AESUtil;
 import com.cloud.ftl.ftlbasic.exception.BusiException;
 import com.cloud.ftl.ftlbasic.webEntity.CommonResp;
 import com.cloud.ftl.ftlbasic.webEntity.RespEntity;
@@ -67,7 +67,7 @@ public class OauthCtrl implements OauthFeign {
     @Override
     public OauthTokenResp defaultLogin(String encryptStr) {
         try {
-            String decryptStr = AesUtil.decrypt(encryptStr, secertKey);
+            String decryptStr = AESUtil.decrypt(encryptStr, secertKey);
             LoginReq loginReq = JSONObject.parseObject(decryptStr, LoginReq.class);
             OauthTokenReq oauthTokenReq = OauthTokenReq.builder()
                     .applicationName(loginProperties.getApplicationName())
@@ -88,7 +88,7 @@ public class OauthCtrl implements OauthFeign {
     @Override
     public String extAppLogin(String encryptStr) {
         try {
-            String decryptStr = AesUtil.decrypt(encryptStr, secertKey);
+            String decryptStr = AESUtil.decrypt(encryptStr, secertKey);
             LoginReq loginReq = JSONObject.parseObject(decryptStr, LoginReq.class);
             OauthTokenReq oauthTokenReq = OauthTokenReq.builder()
                     .applicationName(loginProperties.getApplicationName())

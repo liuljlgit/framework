@@ -1,4 +1,4 @@
-package com.cloud.frame.framecommon.util.security;
+package com.cloud.frame.framecommon.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -14,7 +14,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 @Slf4j
-public class RsaUtil {
+public class RSAUtil {
 
     public static final String CHARSET = "UTF-8";
 
@@ -193,11 +193,11 @@ public class RsaUtil {
         //传入明文和公钥加密,得到密文
         log.info("\r明文：\r\n" + str);
         log.info("\r明文大小：\r\n" + str.getBytes().length);
-        String encodedData = RsaUtil.publicEncrypt(str, RsaUtil.getPublicKey(publicKey));
+        String encodedData = RSAUtil.publicEncrypt(str, RSAUtil.getPublicKey(publicKey));
         log.info("密文：\r\n" + encodedData);
 
         //传入密文和私钥,得到明文
-        String decodedData = RsaUtil.privateDecrypt(encodedData, RsaUtil.getPrivateKey(privateKey));
+        String decodedData = RSAUtil.privateDecrypt(encodedData, RSAUtil.getPrivateKey(privateKey));
         log.info("解密后文字: \r\n" + decodedData);
 
     }
