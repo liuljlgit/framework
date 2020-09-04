@@ -8,7 +8,7 @@ import java.util.Objects;
  * 公共工具类
  * @author lijun
  */
-public class CommonUtil {
+public class CheckUtil {
 
     public static void isNull(Object obj,String errMsg) {
         if(Objects.isNull(obj)) {
