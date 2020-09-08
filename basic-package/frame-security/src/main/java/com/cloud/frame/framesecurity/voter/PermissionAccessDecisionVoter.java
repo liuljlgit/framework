@@ -2,7 +2,7 @@ package com.cloud.frame.framesecurity.voter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cloud.frame.framesecurity.config.IgnoreUrl;
-import com.cloud.frame.framesecurity.constant.RedisKey;
+import com.cloud.frame.framesecurity.constant.SecurityConstants;
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import com.cloud.frame.framesecurity.util.UrlUtil;
 import com.google.common.collect.Sets;
@@ -54,7 +54,7 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         }
 
         //获取资源服务器前缀
-        Map<Object, Object> resourceGatewayPrefixMap = redisTemplate.opsForHash().entries(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP);
+        Map<Object, Object> resourceGatewayPrefixMap = redisTemplate.opsForHash().entries(SecurityConstants.RESOURCE_GATEWAY_PREFIX_MAP);
         if(resourceGatewayPrefixMap.isEmpty()){
             resourceGatewayPrefixMap = securityFeign.getResourceGatewayPrefixMap();
         }
@@ -62,7 +62,7 @@ public class PermissionAccessDecisionVoter implements AccessDecisionVoter<Filter
         servletPath = resourceGatewayPrefixMap.getOrDefault(resourceId,"") + servletPath;
 
         //获取角色对应的URL权限
-        Map<Object, Object> rolekeyDetailsMap = redisTemplate.opsForHash().entries(RedisKey.ROLEKEY_DETAILS_MAP);
+        Map<Object, Object> rolekeyDetailsMap = redisTemplate.opsForHash().entries(SecurityConstants.ROLEKEY_DETAILS_MAP);
         if(rolekeyDetailsMap.isEmpty()){
             rolekeyDetailsMap = securityFeign.getRolekeyDetailsMap();
         }

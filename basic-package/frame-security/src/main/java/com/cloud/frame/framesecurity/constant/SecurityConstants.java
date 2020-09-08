@@ -1,10 +1,10 @@
 package com.cloud.frame.framesecurity.constant;
 
 /**
- * 权限key值
+ * SecurityConstants
  * @author lijun
  */
-public interface RedisKey {
+public interface SecurityConstants {
 
     String RESOURCE_GATEWAY_PREFIX_MAP = "RESOURCE_GATEWAY_PREFIX_MAP";
 

@@ -8,7 +8,7 @@ import com.cloud.frame.authclient.entity.GatewayRoute;
 import com.cloud.frame.frameauth.service.IComRoleService;
 import com.cloud.frame.frameauth.service.IComUserService;
 import com.cloud.frame.frameauth.service.IGatewayRouteService;
-import com.cloud.frame.framesecurity.constant.RedisKey;
+import com.cloud.frame.framesecurity.constant.SecurityConstants;
 import com.cloud.frame.framesecurity.entity.LoginUser;
 import com.cloud.frame.framesecurity.feign.SecurityFeign;
 import io.swagger.annotations.Api;
@@ -52,7 +52,7 @@ public class SecurityCtrl implements SecurityFeign {
         Map<Object, Object> resourceGatewayPrefixMap = gatewayRouteService.selectList(new GatewayRoute()).stream()
                 .filter(e-> !StringUtils.isEmpty(e.getReourceId()))
                 .collect(Collectors.toMap(GatewayRoute::getReourceId, GatewayRoute::getRegexpUrl));
-        redisTemplate.opsForHash().putAll(RedisKey.RESOURCE_GATEWAY_PREFIX_MAP,resourceGatewayPrefixMap);
+        redisTemplate.opsForHash().putAll(SecurityConstants.RESOURCE_GATEWAY_PREFIX_MAP,resourceGatewayPrefixMap);
         return resourceGatewayPrefixMap;
     }
 
@@ -60,7 +60,7 @@ public class SecurityCtrl implements SecurityFeign {
     public Map<Object, Object> getRolekeyDetailsMap() {
         Map<Object, Object> rolekeyDetailsMap = comRoleService.selectList(new ComRole()).stream()
                 .collect(Collectors.toMap(e -> "ROLE_" + e.getRoleCode(), JSONObject::toJSONString));
-        redisTemplate.opsForHash().putAll(RedisKey.ROLEKEY_DETAILS_MAP,rolekeyDetailsMap);
+        redisTemplate.opsForHash().putAll(SecurityConstants.ROLEKEY_DETAILS_MAP,rolekeyDetailsMap);
         return rolekeyDetailsMap;
     }
 
@@ -73,7 +73,7 @@ public class SecurityCtrl implements SecurityFeign {
         LoginUser loginUser = new LoginUser();
         if(Objects.nonNull(dbUser)){
             BeanUtils.copyProperties(dbUser,loginUser);
-            redisTemplate.opsForHash().put(RedisKey.PRINCIPAL_LOGINUSER_MAP,dbUser.getUserName(), JSON.toJSONString(loginUser));
+            redisTemplate.opsForHash().put(SecurityConstants.PRINCIPAL_LOGINUSER_MAP,dbUser.getUserName(), JSON.toJSONString(loginUser));
         }
         return dbUser;
     }
